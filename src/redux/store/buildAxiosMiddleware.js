@@ -22,7 +22,7 @@ export default function buildAxiosMiddleware() {
   const axiosClient = axios.create({
     baseURL: baseUri,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
       Accept: 'application/json',
     },
     responseType: 'json',

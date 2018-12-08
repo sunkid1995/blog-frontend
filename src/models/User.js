@@ -4,7 +4,7 @@ import _ from 'lodash';
 // Models
 import BaseModel, { COMMON_SCHEMAS } from './BaseModel';
 
-const { ID, STRING, STRINGS_ARRAY } = COMMON_SCHEMAS;
+const { STRING, STRINGS_ARRAY } = COMMON_SCHEMAS;
 
 const ROLES = {
   MANAGER: 'sales_manager',
@@ -19,13 +19,12 @@ export default class User extends BaseModel {
   
   static dataValidator(): Joi.SchemaMap {
     return {
-      auth_token: STRING.required(),
-      display_name: STRING.required(),
+      token: STRING.required(),
       email: STRING.required(),
-      id: ID,
-      nickname: STRING.required(),
-      picture: STRING,
-      roles: STRINGS_ARRAY,
+      _id: STRING,
+      username: STRING.required(),
+      // picture: STRING,
+      // roles: STRINGS_ARRAY,
     };
   }
 
