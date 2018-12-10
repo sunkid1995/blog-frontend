@@ -12,7 +12,7 @@ export function buildErrorMessage(errors) {
 }
 
 export function buildHeaders(state) {
-  const { auth: { user: { auth_token: token } = {} } } = state;
+  const { auth: { user: { token } = {} } } = state;
   const bearerToken = token != null ? `Bearer ${token}` : undefined;
 
   return {

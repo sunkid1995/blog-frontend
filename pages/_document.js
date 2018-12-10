@@ -29,7 +29,7 @@ export default class BaseDocument extends Document {
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-s-alert@1.4.1/dist/s-alert-css-effects/stackslide.css" />
           <link rel="stylesheet" href="https://unpkg.com/react-select@1.2.1/dist/react-select.css" />
           {IN_DEV_MODE && <script async defer src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js" />}
-          <title>{'WeFit CRM'}</title>
+          <title>{'Easynote'}</title>
         </Head>
         <body className="custom_class">
           <Main />
