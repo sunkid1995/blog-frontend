@@ -1,10 +1,14 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
-  Nav, NavItem, NavLink,
+  Nav, NavItem, NavLink, Input,
 } from 'reactstrap';
 import css from 'styled-jsx/css';
+
+// Contants
+import { MENU_BAR_IDS, MENU_BAR } from 'src/constants';
 
 // Models
 import User from 'src/models/User';
@@ -12,6 +16,8 @@ import User from 'src/models/User';
 // Locals
 import Avatar from './Avatar';
 import withConnect from './withConnect';
+
+const { HOME, CREATE } = MENU_BAR_IDS;
 
 @withConnect
 export default class UserAvatar extends React.PureComponent {
@@ -57,7 +63,7 @@ export default class UserAvatar extends React.PureComponent {
         >
           <DropdownToggle aria-expanded={dropdownOpen} data-toggle="dropdown" tag="div">
             <div className={`avatar-toggle ${dropdownOpen ? 'show' : ''}`}>
-              <Avatar size={48} />
+              <Avatar size={40} />
             </div>
           </DropdownToggle>
           <DropdownMenu right>
@@ -71,6 +77,19 @@ export default class UserAvatar extends React.PureComponent {
     );
   }
 
+  renderMenubarItem = () => _.map([HOME, CREATE], id => {
+    const { [id]: { enabled, href, title } } = MENU_BAR;
+    if (!enabled) return null;
+
+    return (
+      <NavItem key={`nav-item-${id}`}>
+        <NavLink className="mt-1" href={href}>
+          {title}
+        </NavLink>
+      </NavItem>
+    );
+  })
+
   render() {
     const { user } = this.props;
     if (user == null) return null;
@@ -78,9 +97,15 @@ export default class UserAvatar extends React.PureComponent {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink className="mt-2">{`Xin chào, ${user.nickname}`}</NavLink>
+          <Input className="input-search-bar mt-1" placeholder="Tìm kiếm" type="text" />
         </NavItem>
-        {this.renderAvatar()}
+        {this.renderMenubarItem()}
+        <NavItem>
+          {this.renderAvatar()}
+        </NavItem>
+        <NavItem>
+          <NavLink className="mt-1">{`Xin chào, ${user.username}`}</NavLink>
+        </NavItem>
       </Nav>
     );
   }
@@ -108,5 +133,17 @@ const avatarStyles = css`
 
   .user-avatar :global(.dropdown-menu) > :global(.dropdown-item) {
     cursor: pointer;
+  }
+
+  :global(.input-search-bar) {
+    width: 450px !important;
+  }
+
+  @media (max-width: 480px) {
+
+    :global(.input-search-bar) {
+      width: 325px !important;
+    }
+
   }
 `;
