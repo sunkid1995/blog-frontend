@@ -2,6 +2,7 @@ import React from 'react';
 
 // Components
 import AuthContainer from 'src/components/AuthContainer';
+import ViewsAllPost from 'src/components/ViewsAllPost';
 
 // Locals
 import withRedux from './withRedux';
@@ -11,7 +12,7 @@ export default class Home extends React.PureComponent {
   render() {
     return (
       <AuthContainer>
-        {'hello word'}
+        <ViewsAllPost />
       </AuthContainer>
     );
   }

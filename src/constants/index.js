@@ -47,3 +47,22 @@ export const FORMAT_NUMBER = {
   CURRENCY_NUMBER: '0,0',
   NUMBER: '0',
 };
+
+
+const HOME = 'home';
+const CREATE = 'create';
+
+export const MENU_BAR = {
+  [HOME]: {
+    enabled: true,
+    href: '/',
+    title: 'Trang chủ',
+  },
+  [CREATE]: {
+    enabled: true,
+    href: '/create',
+    title: 'Tạo',
+  },
+};
+
+export const MENU_BAR_IDS = { HOME, CREATE };
