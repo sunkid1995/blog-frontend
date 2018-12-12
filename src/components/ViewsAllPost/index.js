@@ -19,15 +19,29 @@ export default class ViewsAllPost extends React.Component {
     allPost: propTypes.object.isRequired,
     getAllPost: propTypes.func.isRequired,
   }
-  
+
   constructor(props) {
     super(props);
+    this.state = {
+      page: 1, perPage: 10,
+    };
     
     this.getAllPost = props.getAllPost.bind(this);
   }
 
-  componentDidMount() {
-    this.getAllPost();
+  componentDidMount = () => this.requestGetAllPostToAPI();
+
+  componentDidUpdate = (prevProps, prevState) => {
+    const { page, perPage } = this.state;
+    const { page: prevPage, perPage: prevPerPage } = prevState;
+    
+    // prevState !== state then call request api
+    if (page !== prevPage || perPage !== prevPerPage) this.requestGetAllPostToAPI();
+  }
+
+  requestGetAllPostToAPI = () => {
+    const { page, perPage } = this.state;
+    this.getAllPost({ page, perPage });
   }
 
   renderContentPost = (item, index) => {

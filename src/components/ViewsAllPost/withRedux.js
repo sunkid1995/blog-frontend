@@ -11,7 +11,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAllPost: () => dispatch(serviceApi.getAllPost()),
+    getAllPost: payload => dispatch(serviceApi.getAllPost(payload)),
   };
 }
 
