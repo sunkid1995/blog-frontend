@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import { Col, Card, CardTitle, CardImg, CardText } from 'reactstrap';
 
 // css
@@ -8,8 +9,16 @@ import css from 'styled-jsx/css';
 import Avatar from 'src/components/Commons/Avatar';
 
 export default class Content extends React.Component {
+  static propTypes = {
+    item: propTypes.object.isRequired,
+  }
+
   componentDidMount() {}
+  
   render() {
+    const { item } = this.props;
+    const { content, authorId: auth } = item;
+    const { username } = auth;
     return (
       <Col sm={{ size: 6, order: 2, offset: 3 }}>
         <Card body className="card-content">
@@ -17,11 +26,11 @@ export default class Content extends React.Component {
             <Avatar size={48} />
             <span>
               <a className="ml-2 card-user-name">
-                {'Nguyễn ngọc bình'}
+                {username}
               </a>
             </span>
           </CardTitle>
-          <CardText>{'With supporting text below as a natural lead-in to additional content.'}</CardText>
+          <CardText className="content-post">{content}</CardText>
           <CardImg alt="Card image cap" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" top width="100%" />
         </Card>
         <style jsx>{styles}</style>

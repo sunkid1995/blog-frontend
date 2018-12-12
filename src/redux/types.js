@@ -15,6 +15,7 @@ export const SERVICE_API = {
   AUTH_WITH_EMAIL: 'serviceApi/AUTH_WITH_EMAIL',
   FORGOT_PASSWORD: 'serviceApi/FORGOT_PASSWORD',
   RESET_PASSWORD: 'serviceApi/RESET_PASSWORD',
+  GET_ALL_POST: 'serviceApi/GET_ALL_POST',
 };
 
 export const SHARED = {

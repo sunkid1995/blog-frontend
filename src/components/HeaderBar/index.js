@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Navbar, NavbarBrand, NavbarToggler, Collapse, Input } from 'reactstrap';
+import { Container, Navbar, NavbarBrand, NavbarToggler, Collapse } from 'reactstrap';
 
 // css
 import css from 'styled-jsx/css';
@@ -27,7 +27,7 @@ export default class HeaderBar extends React.PureComponent {
   render() {
     const { isOpenNavBar } = this.state;
     return (
-      <Navbar className="py-1" color="primary" dark expand="sm">
+      <Navbar className="py-1" color="primary" dark expand="sm" fixed="top">
         <Container>
           <NavbarBrand href="/">
             <SvgIcon name="logo" size={45} />
