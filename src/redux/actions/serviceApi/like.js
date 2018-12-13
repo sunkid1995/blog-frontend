@@ -25,7 +25,7 @@ export function getAllLike(payload) {
       },
       method: GET,
       transformResponse: response =>
-        responseInterceptor(response, ({ data }) => console.log(data)),
+        responseInterceptor(response, ({ data }) => data),
       url:'/like',
     };
     return dispatch(action({ request, dataKey }));
