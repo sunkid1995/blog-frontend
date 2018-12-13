@@ -7,6 +7,9 @@ import css from 'styled-jsx/css';
 // Component
 import Avatar from 'src/components/Commons/Avatar';
 
+// Constants
+import { COLOR, FONT_SIZE } from 'src/constants/style-set';
+
 export default class CreatePost extends React.Component {
   constructor() {
     super();
@@ -29,7 +32,7 @@ export default class CreatePost extends React.Component {
           </CardHeader>
           <CardBody>
             <FormGroup row>
-              <Label for="create-post" sm={1}>
+              <Label className="label-avatar" for="create-post" sm={1}>
                 <Avatar size={48} />
               </Label>
               <Col sm={11}>
@@ -63,12 +66,20 @@ const styles = css`
 
   :global(.title-create-post) {
     margin-bottom: 0;
-    color: #4b4f56;
-    font-size: 14px;
+    color: ${COLOR.BLACK_PALE};
+    font-size: ${FONT_SIZE.NORMAL};
     font-weight: 600;
   }
 
   :global(.input-create-post) {
     min-height: 100px !important;
+  }
+
+  @media (max-width: 480px) {
+
+    :global(.label-avatar) {
+      display: none;
+    }
+
   }
 `;
