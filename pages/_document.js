@@ -21,6 +21,11 @@ export default class BaseDocument extends Document {
           <link rel="shortcut icon" href="https://wefit.vn/wp-content/uploads/2017/01/favwefit.png" />
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <meta name="google-site-verification" content="9H-6SJd83YbuzS6DXi-mmfD2uQOyafYKfiRgDU2Xtkw" />
+          <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" 
+            integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous"
+          />
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <link rel="stylesheet" href="/_next/static/style.css" />
