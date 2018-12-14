@@ -17,6 +17,7 @@ export const SERVICE_API = {
   RESET_PASSWORD: 'serviceApi/RESET_PASSWORD',
   GET_ALL_POST: 'serviceApi/GET_ALL_POST',
   GET_ALL_LIKE: 'serviceApi/GET_ALL_LIKE',
+  CREATE_LIKE: 'serviceApi/CREATE_LIKE',
 };
 
 export const SHARED = {

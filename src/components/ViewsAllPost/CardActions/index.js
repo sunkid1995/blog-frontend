@@ -11,13 +11,20 @@ const CardActions = props => {
       <Row className="row-actions text-center">
         <Col className="wrap-actions" onClick={() => actionsLike({ checkLike, index, item })}>
           <p className="actions-post mb-0 p-2 pt-1">
-            <i className="far fa-heart" />{' '}
+            
             {checkLike === true ?
-              <span>{'Đã thích'}</span>
+              <span>
+                <i className="fas fa-heart" />{' '}
+                {'Đã thích'}
+              </span>
               :
-              <span>{'Thích'}</span>
+              <span>
+                <i className="far fa-heart" />{' '}
+                {'Thích'}
+              </span>
             }
           </p>
+         
         </Col>
         <Col className="wrap-actions">
           <p className="actions-post mb-0 p-2 pt-1">
