@@ -18,6 +18,7 @@ export default class ViewsAllPost extends React.Component {
   static propTypes = {
     allLike: propTypes.object.isRequired,
     allPost: propTypes.object.isRequired,
+    createLike: propTypes.func.isRequired,
     getAllLike: propTypes.func.isRequired,
     getAllPost: propTypes.func.isRequired,
   }
@@ -30,6 +31,7 @@ export default class ViewsAllPost extends React.Component {
     
     this.getAllPost = props.getAllPost.bind(this);
     this.getAllLike = props.getAllLike.bind(this);
+    this.createLike = props.createLike.bind(this);
   }
 
   componentDidMount = () => this.requestGetAllPostToAPI();
@@ -56,6 +58,7 @@ export default class ViewsAllPost extends React.Component {
     const { allLike } = this.props;
     const props = {
       item, index, allLike,
+      createLike: this.createLike,
     };
 
     return (

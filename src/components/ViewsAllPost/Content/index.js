@@ -18,6 +18,7 @@ import CardGetComment from '../CardGetComment';
 export default class Content extends React.Component {
   static propTypes = {
     allLike: propTypes.object.isRequired,
+    createLike: propTypes.func.isRequired,
     index: propTypes.number.isRequired,
     item: propTypes.object.isRequired,
   }
@@ -58,10 +59,12 @@ export default class Content extends React.Component {
     if (allLike[index] !== undefined) {
       // đã like
       const { _id, postId: { _id: PostId }, userId } = allLike[index];
-      console.log(_id, PostId, userId);
+      // console.log(_id, PostId, userId);
     } else {
       // chưa like
-      console.log(item, 'item');
+      const like = true;
+      const { _id: postId, authorId: { _id: userId } } = item;
+      this.props.createLike({ postId, userId, like });
     }
   }
   

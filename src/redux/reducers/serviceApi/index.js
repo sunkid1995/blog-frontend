@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   passwordReset: INITIAL_PLAIN_DATA_REQUEST,
   allPost: INITIAL_PLAIN_DATA_REQUEST,
   allLike: INITIAL_PLAIN_DATA_REQUEST,
+  creatLike: INITIAL_BLANK_REQUEST,
 };
 
 export default function serviceApiReducer(state = INITIAL_STATE, action) {
