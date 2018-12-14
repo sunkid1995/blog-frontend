@@ -16,7 +16,9 @@ import withRedux from './withRedux';
 @withRedux
 export default class ViewsAllPost extends React.Component {
   static propTypes = {
+    allLike: propTypes.object.isRequired,
     allPost: propTypes.object.isRequired,
+    getAllLike: propTypes.func.isRequired,
     getAllPost: propTypes.func.isRequired,
   }
 
@@ -27,6 +29,7 @@ export default class ViewsAllPost extends React.Component {
     };
     
     this.getAllPost = props.getAllPost.bind(this);
+    this.getAllLike = props.getAllLike.bind(this);
   }
 
   componentDidMount = () => this.requestGetAllPostToAPI();
@@ -41,12 +44,18 @@ export default class ViewsAllPost extends React.Component {
 
   requestGetAllPostToAPI = () => {
     const { page, perPage } = this.state;
+
+    // get all post
     this.getAllPost({ page, perPage });
+
+    // get all like in post
+    this.getAllLike({ page, perPage });
   }
 
   renderContentPost = (item, index) => {
+    const { allLike } = this.props;
     const props = {
-      item, index,
+      item, index, allLike,
     };
 
     return (

@@ -1,16 +1,22 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import { Row, Col } from 'reactstrap';
 import css from 'styled-jsx/css';
 
 const CardActions = props => {
-  const {} = props;
+  const { checkLike, actionsLike, index, item } = props;
+
   return (
     <React.Fragment>
       <Row className="row-actions text-center">
-        <Col className="wrap-actions">
+        <Col className="wrap-actions" onClick={() => actionsLike({ checkLike, index, item })}>
           <p className="actions-post mb-0 p-2 pt-1">
             <i className="far fa-heart" />{' '}
-            {'Thích'}
+            {checkLike === true ?
+              <span>{'Đã thích'}</span>
+              :
+              <span>{'Thích'}</span>
+            }
           </p>
         </Col>
         <Col className="wrap-actions">
@@ -23,6 +29,13 @@ const CardActions = props => {
       <style jsx>{styles}</style>
     </React.Fragment>
   );
+};
+
+CardActions.propTypes = {
+  actionsLike: propTypes.func.isRequired,
+  checkLike: propTypes.bool.isRequired,
+  index: propTypes.number.isRequired,
+  item: propTypes.object.isRequired,
 };
 
 const styles = css`
