@@ -53,8 +53,9 @@ export default class ViewsAllPost extends React.Component {
   }
 
   renderContentPost = (item, index) => {
+    const { allLike } = this.props;
     const props = {
-      item, index,
+      item, index, allLike,
     };
 
     return (

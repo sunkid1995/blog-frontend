@@ -17,32 +17,63 @@ import CardGetComment from '../CardGetComment';
 
 export default class Content extends React.Component {
   static propTypes = {
+    allLike: propTypes.object.isRequired,
+    index: propTypes.number.isRequired,
     item: propTypes.object.isRequired,
   }
 
-  componentDidMount() {}
+  constructor() {
+    super();
+    this.state = {
+      allLike: [],
+      check: false,
+    };
+  }
+
+  componentWillReceiveProps = nextProps => {
+    const { allLike, item } = this.props;
+    const { allLike: nextAllLike } = nextProps;
+    if (allLike !== nextAllLike) {
+      const { data } = nextAllLike;
+      if (data !== undefined) this.setState({ allLike: data });
+
+      _.each(data, abc => {
+        const { postId: { _id }, like: ahah } = abc;
+        const { _id: idPost } = item;
+        if (_id === idPost) {
+          return this.state.check = ahah;
+        }
+      });
+    }
+  }
+
+
+  actionsLike = payload => {
+    const { allLike } = this.state;
+    const { checkLike, index, item } = payload;
+
+    if (checkLike === true) this.setState({ check: false });
+    else this.setState({ check: true });
+
+    if (allLike[index] !== undefined) {
+      // đã like
+      const { _id, postId: { _id: PostId }, userId } = allLike[index];
+      console.log(_id, PostId, userId);
+    } else {
+      // chưa like
+      console.log(item, 'item');
+    }
+  }
   
   render() {
-    const { item } = this.props;
+    const { item, index } = this.props;
+    const { allLike, check } = this.state;
+
     const { content, authorId: auth } = item;
     const { username } = auth;
 
-    const data = [
-      {
-        _id: '5bfe64086f16dfaba69aaab6',
-        userId: '5bf66cfda14919617f52f475',
-        postId: {
-          _id: '5bfba3c1bbb3a751ccfbe7a2',
-          title: 'Bitcoin sụt giảm thê thảm, các công ty đào tiền mã hóa đua nhau phá sản',
-        },
-        __v: 0,
-        created_at: '2018-11-28T09:39:37.764Z',
-        like: 0,
-      },
-    ];
-
-    const like = _.reduce(data, (result, haha) => {
-      const { postId: { _id }, userId } = haha;
+    const getLike = _.reduce(allLike, (result, like) => {
+      const { postId: { _id }, userId } = like;
       const { _id: idPost } = item;
       if (_id === idPost) {
         result.push(userId);
@@ -72,13 +103,18 @@ export default class Content extends React.Component {
             <p className="actions-post mb-0 p-2 pt-1">
               <i className="far fa-heart" />{' '}
               <span>
-                {like.length}
+                {getLike.length}
               </span>
             </p>
           </CardBody>
           
           <CardFooter className="card-actions">
-            <CardActions />
+            <CardActions 
+              actionsLike={this.actionsLike} 
+              checkLike={check}
+              index={index}
+              item={item}
+            />
           </CardFooter>
 
           <CardFooter className="card-comment">
