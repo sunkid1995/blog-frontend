@@ -5,7 +5,7 @@ export const IN_DEV_MODE = process.env.NODE_ENV !== 'production' && env !== 'sta
 export const API_CONFIGS = {
   PAGINATION: 10,
   REQUEST_METHODS: {
-    DELETE: 'del',
+    DELETE: 'delete',
     GET: 'get',
     PATCH: 'patch',
     POST: 'post',
