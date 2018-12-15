@@ -18,6 +18,7 @@ export const SERVICE_API = {
   GET_ALL_POST: 'serviceApi/GET_ALL_POST',
   GET_ALL_LIKE: 'serviceApi/GET_ALL_LIKE',
   CREATE_LIKE: 'serviceApi/CREATE_LIKE',
+  UNLIKE_LIKE: 'serviceApi/UNLIKE_LIKE',
 };
 
 export const SHARED = {

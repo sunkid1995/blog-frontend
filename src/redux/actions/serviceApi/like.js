@@ -10,7 +10,7 @@ import { SERVICE_API } from 'src/redux/types';
 // Utils
 import { buildHeaders, responseInterceptor } from 'src/redux/utils';
 
-const { REQUEST_METHODS: { GET, POST } } = API_CONFIGS;
+const { REQUEST_METHODS: { GET, POST, DELETE } } = API_CONFIGS;
 
 export function getAllLike(payload) {
   const { page, perPage } = payload;
@@ -37,7 +37,7 @@ export function createLike(payload) {
   const { userId, postId, like } = payload;
 
   const action = createAction(SERVICE_API.CREATE_LIKE);
-  const dataKey = 'creatLike';
+  const dataKey = 'createLike';
 
   const data = qs.stringify({ userId, postId, like });
   return (dispatch, getState) => {
@@ -50,5 +50,28 @@ export function createLike(payload) {
       url: '/create_like_post',
     };
     dispatch(action({ dataKey, request }));
+  };
+}
+
+export function unLike(payload) {
+  const { userId, postId, _id } = payload;
+  const action = createAction(SERVICE_API.UNLIKE_LIKE);
+  const dataKey = 'unLike';
+
+
+  const data = qs.stringify({
+    userId, postId, likeId: _id, 
+  });
+
+  return (dispatch, getState) => {
+    const request = {
+      headers: buildHeaders(getState()),
+      data,
+      method: DELETE,
+      transformResponse: response =>
+        responseInterceptor(response, ({ success, error }) => ({ success, error })),
+      url: '/unlike_post',
+    };
+    dispatch(action({ request, dataKey }));
   };
 }

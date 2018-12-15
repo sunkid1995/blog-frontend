@@ -21,6 +21,7 @@ export default class ViewsAllPost extends React.Component {
     createLike: propTypes.func.isRequired,
     getAllLike: propTypes.func.isRequired,
     getAllPost: propTypes.func.isRequired,
+    unLike: propTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -32,9 +33,10 @@ export default class ViewsAllPost extends React.Component {
     this.getAllPost = props.getAllPost.bind(this);
     this.getAllLike = props.getAllLike.bind(this);
     this.createLike = props.createLike.bind(this);
+    this.unLike = props.unLike.bind(this);
   }
 
-  componentDidMount = () => this.requestGetAllPostToAPI();
+  componentDidMount = () => this.requestGetAllPostToAPI()
 
   componentDidUpdate = (prevProps, prevState) => {
     const { page, perPage } = this.state;
@@ -59,6 +61,7 @@ export default class ViewsAllPost extends React.Component {
     const props = {
       item, index, allLike,
       createLike: this.createLike,
+      unLike: this.unLike,
     };
 
     return (

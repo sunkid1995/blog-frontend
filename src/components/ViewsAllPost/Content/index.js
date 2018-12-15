@@ -21,6 +21,7 @@ export default class Content extends React.Component {
     createLike: propTypes.func.isRequired,
     index: propTypes.number.isRequired,
     item: propTypes.object.isRequired,
+    unLike: propTypes.func.isRequired,
   }
 
   constructor() {
@@ -39,10 +40,10 @@ export default class Content extends React.Component {
       if (data !== undefined) this.setState({ allLike: data });
 
       _.each(data, abc => {
-        const { postId: { _id }, like: ahah } = abc;
+        const { postId: { _id }, like } = abc;
         const { _id: idPost } = item;
         if (_id === idPost) {
-          return this.state.check = ahah;
+          return this.state.check = like;
         }
       });
     }
@@ -51,25 +52,27 @@ export default class Content extends React.Component {
 
   actionsLike = payload => {
     const { allLike } = this.state;
-    const { checkLike, index, item } = payload;
+    const { checkLike, item } = payload;
 
-    if (checkLike === true) this.setState({ check: false });
-    else this.setState({ check: true });
+    const { _id: postId } = item;
 
-    if (allLike[index] !== undefined) {
-      // đã like
-      const { _id, postId: { _id: PostId }, userId } = allLike[index];
-      // console.log(_id, PostId, userId);
+    if (checkLike === true) {
+      const fillterLike = _.filter(allLike, like => like.postId._id === postId);
+      const { _id, userId } = fillterLike[0];
+
+      this.props.unLike({ _id, postId, userId });
+      this.setState({ check: false });
     } else {
-      // chưa like
       const like = true;
       const { _id: postId, authorId: { _id: userId } } = item;
+
       this.props.createLike({ postId, userId, like });
+      this.setState({ check: true });
     }
   }
   
   render() {
-    const { item, index } = this.props;
+    const { item } = this.props;
     const { allLike, check } = this.state;
 
     const { content, authorId: auth } = item;
@@ -115,7 +118,6 @@ export default class Content extends React.Component {
             <CardActions 
               actionsLike={this.actionsLike} 
               checkLike={check}
-              index={index}
               item={item}
             />
           </CardFooter>
