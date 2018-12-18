@@ -15,6 +15,11 @@ import CardActions from '../CardActions';
 import CardCreateComment from '../CardCreateComment';
 import CardGetComment from '../CardGetComment';
 
+
+// withConnect
+import withConnect from './withConnect';
+
+@withConnect
 export default class Content extends React.Component {
   static propTypes = {
     allLike: propTypes.object.isRequired,
@@ -22,35 +27,57 @@ export default class Content extends React.Component {
     index: propTypes.number.isRequired,
     item: propTypes.object.isRequired,
     unLike: propTypes.func.isRequired,
+    user: propTypes.object.isRequired,
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       allLike: [],
       check: false,
+      likebyPost: {},
+      getTotalLike: 0,
     };
   }
 
   componentWillReceiveProps = nextProps => {
-    const { allLike, item } = this.props;
+    const { allLike } = this.props;
     const { allLike: nextAllLike } = nextProps;
     if (allLike !== nextAllLike) {
       const { data } = nextAllLike;
       if (data !== undefined) this.setState({ allLike: data });
-
-      _.each(data, abc => {
-        const { postId: { _id }, like } = abc;
-        const { _id: idPost } = item;
-        if (_id === idPost) {
-          return this.state.check = like;
-        }
-      });
+      this.logicCheckLike(data);
     }
   }
 
+  logicCheckLike = data => {
+    const { item, user: { _id: userId } } = this.props;
+
+    // check actions like post
+    _.each(data, likeItem => {
+      const { postId: { _id }, userId: user } = likeItem;
+      const { _id: idPost } = item;
+      if (_id === idPost) {
+        const den = _.filter(user, item => item._id === userId);
+        if (den.length > 0) this.setState({ check: true });
+        else this.setState({ check: false });
+      }
+    });
+
+    // check total like
+    const getLike = _.clone(data);
+    _.each(getLike, dataLike => {
+      const { postId: { _id } } = dataLike;
+      dataLike.postIds = _id;
+    });
+
+    const likebyPost = _.groupBy(getLike, 'postIds');
+    if (likebyPost[item._id] !== undefined) this.setState({ getTotalLike: likebyPost[item._id][0].totalLike });
+    else this.setState({ getTotalLike: 0 });
+  }
 
   actionsLike = payload => {
+    const { user: { _id: userId } } = this.props;
     const { allLike } = this.state;
     const { checkLike, item } = payload;
 
@@ -58,34 +85,33 @@ export default class Content extends React.Component {
 
     if (checkLike === true) {
       const fillterLike = _.filter(allLike, like => like.postId._id === postId);
-      const { _id, userId } = fillterLike[0];
+      const totalLike = fillterLike[0].totalLike - 1;
 
-      this.props.unLike({ _id, postId, userId });
-      this.setState({ check: false });
+      this.props.unLike({ postId, userId, totalLike });
+      this.setState({ check: false, getTotalLike: this.state.getTotalLike - 1 });
     } else {
-      const like = true;
-      const { _id: postId, authorId: { _id: userId } } = item;
+      const { _id: postId } = item;
+      const fillterLike = _.filter(allLike, like => like.postId._id === postId);
 
-      this.props.createLike({ postId, userId, like });
+      const totalLike = 1;
+      if (fillterLike.length > 0) {
+        const totalLike = fillterLike[0].totalLike + 1;
+        this.setState({ getTotalLike: this.state.getTotalLike + 1 });
+        this.props.createLike({ postId, userId, totalLike });
+      } else {
+        this.setState({ getTotalLike: totalLike });
+        this.props.createLike({ postId, userId, totalLike });
+      }
       this.setState({ check: true });
     }
   }
   
   render() {
     const { item } = this.props;
-    const { allLike, check } = this.state;
+    const { check, getTotalLike } = this.state;
 
     const { content, authorId: auth } = item;
-    const { username } = auth;
-
-    const getLike = _.reduce(allLike, (result, like) => {
-      const { postId: { _id }, userId } = like;
-      const { _id: idPost } = item;
-      if (_id === idPost) {
-        result.push(userId);
-      }
-      return result;
-    }, []);
+    const { username } = auth !== null && auth;
 
     return (
       <Col sm={{ size: 6, order: 2, offset: 3 }}>
@@ -108,9 +134,7 @@ export default class Content extends React.Component {
             />
             <p className="actions-post mb-0 p-2 pt-1">
               <i className="far fa-heart" />{' '}
-              <span>
-                {getLike.length}
-              </span>
+              {getTotalLike}
             </p>
           </CardBody>
           

@@ -50,7 +50,7 @@ export default class UserAvatar extends React.PureComponent {
     }
   };
 
-  renderAvatar() {
+  renderAvatar(user) {
     const { dropdownOpen } = this.state;
 
     return (
@@ -67,8 +67,9 @@ export default class UserAvatar extends React.PureComponent {
             </div>
           </DropdownToggle>
           <DropdownMenu right>
-            <DropdownItem data-tag="add_lead" onClick={this.onSelectMenu}>{'Nhập contact'}</DropdownItem>
+            <DropdownItem data-tag="add_lead" >{`Hi, ${user.username}`}</DropdownItem>
             <DropdownItem divider />
+            <DropdownItem data-tag="add_lead" onClick={this.onSelectMenu}>{'Trang cá nhân'}</DropdownItem>
             <DropdownItem data-tag="log_out" onClick={this.onSelectMenu}>{'Đăng xuất'}</DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -101,10 +102,7 @@ export default class UserAvatar extends React.PureComponent {
         </NavItem>
         {this.renderMenubarItem()}
         <NavItem>
-          {this.renderAvatar()}
-        </NavItem>
-        <NavItem>
-          <NavLink className="mt-1">{`Xin chào, ${user.username}`}</NavLink>
+          {this.renderAvatar(user)}
         </NavItem>
       </Nav>
     );

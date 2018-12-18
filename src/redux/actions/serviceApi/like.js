@@ -34,12 +34,12 @@ export function getAllLike(payload) {
 }
 
 export function createLike(payload) {
-  const { userId, postId, like } = payload;
+  const { userId, postId, totalLike } = payload;
 
   const action = createAction(SERVICE_API.CREATE_LIKE);
   const dataKey = 'createLike';
 
-  const data = qs.stringify({ userId, postId, like });
+  const data = qs.stringify({ userId, postId, totalLike });
   return (dispatch, getState) => {
     const request = {
       headers: buildHeaders(getState()),
@@ -54,13 +54,13 @@ export function createLike(payload) {
 }
 
 export function unLike(payload) {
-  const { userId, postId, _id } = payload;
+  const { userId, postId, totalLike } = payload;
   const action = createAction(SERVICE_API.UNLIKE_LIKE);
   const dataKey = 'unLike';
 
 
   const data = qs.stringify({
-    userId, postId, likeId: _id, 
+    userId, postId, totalLike, 
   });
 
   return (dispatch, getState) => {

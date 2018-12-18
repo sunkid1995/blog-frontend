@@ -12,7 +12,7 @@ const CardActions = props => {
         <Col className="wrap-actions" onClick={() => actionsLike({ checkLike, item })}>
           <p className="actions-post mb-0 p-2 pt-1">
             
-            {checkLike === true ?
+            {checkLike ?
               <span>
                 <i className="fas fa-heart" />{' '}
                 {'Đã thích'}
