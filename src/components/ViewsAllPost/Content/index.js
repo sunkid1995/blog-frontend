@@ -55,20 +55,26 @@ export default class Content extends React.Component {
 
     // check actions like post
     _.each(data, likeItem => {
-      const { postId: { _id }, userId: user } = likeItem;
-      const { _id: idPost } = item;
-      if (_id === idPost) {
-        const den = _.filter(user, item => item._id === userId);
-        if (den.length > 0) this.setState({ check: true });
-        else this.setState({ check: false });
+      const { postId, userId: user } = likeItem;
+      if (postId !== null) {
+        const { _id } = postId;
+        const { _id: idPost } = item;
+        if (_id === idPost) {
+          const den = _.filter(user, item => item._id === userId);
+          if (den.length > 0) this.setState({ check: true });
+          else this.setState({ check: false });
+        }
       }
     });
 
     // check total like
     const getLike = _.clone(data);
     _.each(getLike, dataLike => {
-      const { postId: { _id } } = dataLike;
-      dataLike.postIds = _id;
+      const { postId } = dataLike;
+      if (postId !== null) {
+        const { _id } = postId;
+        return dataLike.postIds = _id;
+      }
     });
 
     const likebyPost = _.groupBy(getLike, 'postIds');
@@ -84,15 +90,22 @@ export default class Content extends React.Component {
     const { _id: postId } = item;
 
     if (checkLike === true) {
-      const fillterLike = _.filter(allLike, like => like.postId._id === postId);
-      const totalLike = fillterLike[0].totalLike - 1;
+      const fillterLike = _.filter(allLike, like => {
+        const { postId: postIdOfLike } = like;
+        if (postIdOfLike !== null) return postIdOfLike._id === postId;
+      });
 
+      const totalLike = fillterLike[0].totalLike - 1;
       this.props.unLike({ postId, userId, totalLike });
       this.setState({ check: false, getTotalLike: this.state.getTotalLike - 1 });
     } else {
       const { _id: postId } = item;
-      const fillterLike = _.filter(allLike, like => like.postId._id === postId);
 
+      const fillterLike = _.filter(allLike, like => {
+        const { postId: postIdOfLike } = like;
+        if (postIdOfLike !== null) return postIdOfLike._id === postId;
+      });
+      
       const totalLike = 1;
       if (fillterLike.length > 0) {
         const totalLike = fillterLike[0].totalLike + 1;
