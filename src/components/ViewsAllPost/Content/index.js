@@ -95,8 +95,13 @@ export default class Content extends React.Component {
         if (postIdOfLike !== null) return postIdOfLike._id === postId;
       });
 
-      const totalLike = fillterLike[0].totalLike - 1;
-      this.props.unLike({ postId, userId, totalLike });
+      if (fillterLike.length > 0) {
+        const totalLike = fillterLike[0].totalLike > 0 ? fillterLike[0].totalLike - 1 : 0;
+        this.props.unLike({ postId, userId, totalLike });
+      } else {
+        const totalLike = 0;
+        this.props.unLike({ postId, userId, totalLike });
+      }
       this.setState({ check: false, getTotalLike: this.state.getTotalLike - 1 });
     } else {
       const { _id: postId } = item;
