@@ -15,6 +15,11 @@ import CardActions from '../CardActions';
 import CardCreateComment from '../CardCreateComment';
 import CardGetComment from '../CardGetComment';
 
+
+// withConnect
+import withConnect from './withConnect';
+
+@withConnect
 export default class Content extends React.Component {
   static propTypes = {
     allLike: propTypes.object.isRequired,
@@ -22,6 +27,7 @@ export default class Content extends React.Component {
     index: propTypes.number.isRequired,
     item: propTypes.object.isRequired,
     unLike: propTypes.func.isRequired,
+    user: propTypes.object.isRequired,
   }
 
   constructor() {
@@ -29,28 +35,35 @@ export default class Content extends React.Component {
     this.state = {
       allLike: [],
       check: false,
+      likebyPost: {},
     };
   }
 
   componentWillReceiveProps = nextProps => {
-    const { allLike, item } = this.props;
+    const { allLike } = this.props;
     const { allLike: nextAllLike } = nextProps;
     if (allLike !== nextAllLike) {
       const { data } = nextAllLike;
       if (data !== undefined) this.setState({ allLike: data });
-
-      _.each(data, abc => {
-        const { postId: { _id }, like } = abc;
-        const { _id: idPost } = item;
-        if (_id === idPost) {
-          return this.state.check = like;
-        }
-      });
+      this.logicCheckLike(data);
     }
   }
 
+  logicCheckLike = data => {
+    const { item, user: { _id: userId } } = this.props;
+    _.each(data, likeItem => {
+      const { postId: { _id }, userId: user } = likeItem;
+      const { _id: idPost } = item;
+      if (_id === idPost) {
+        const den = _.filter(user, item => item._id === userId);
+        if (den.length > 0) this.setState({ check: true });
+        else this.setState({ check: false });
+      }
+    });
+  }
 
   actionsLike = payload => {
+    const { user: { _id: userId } } = this.props;
     const { allLike } = this.state;
     const { checkLike, item } = payload;
 
@@ -58,15 +71,22 @@ export default class Content extends React.Component {
 
     if (checkLike === true) {
       const fillterLike = _.filter(allLike, like => like.postId._id === postId);
-      const { _id, userId } = fillterLike[0];
+      const totalLike = fillterLike[0].totalLike - 1;
 
-      this.props.unLike({ _id, postId, userId });
+      this.props.unLike({ postId, userId, totalLike });
       this.setState({ check: false });
     } else {
-      const like = true;
-      const { _id: postId, authorId: { _id: userId } } = item;
+      const { _id: postId } = item;
+      const fillterLike = _.filter(allLike, like => like.postId._id === postId);
 
-      this.props.createLike({ postId, userId, like });
+      const totalLike = 1;
+      if (fillterLike.length > 0) {
+        const totalLike = fillterLike[0].totalLike + 1;
+        this.props.createLike({ postId, userId, totalLike });
+      } else {
+        this.props.createLike({ postId, userId, totalLike });
+      }
+     
       this.setState({ check: true });
     }
   }
@@ -76,16 +96,15 @@ export default class Content extends React.Component {
     const { allLike, check } = this.state;
 
     const { content, authorId: auth } = item;
-    const { username } = auth;
+    const { username } = auth !== null && auth;
 
-    const getLike = _.reduce(allLike, (result, like) => {
-      const { postId: { _id }, userId } = like;
-      const { _id: idPost } = item;
-      if (_id === idPost) {
-        result.push(userId);
-      }
-      return result;
-    }, []);
+    const getLike = _.clone(allLike);
+    _.each(getLike, data => {
+      const { postId: { _id } } = data;
+      data.postIds = _id;
+    });
+
+    const likebyPost = _.groupBy(getLike, 'postIds');
 
     return (
       <Col sm={{ size: 6, order: 2, offset: 3 }}>
@@ -108,9 +127,7 @@ export default class Content extends React.Component {
             />
             <p className="actions-post mb-0 p-2 pt-1">
               <i className="far fa-heart" />{' '}
-              <span>
-                {getLike.length}
-              </span>
+              {likebyPost[item._id] !== undefined ? <span>{likebyPost[item._id][0].totalLike}</span> : <span>{0}</span>}
             </p>
           </CardBody>
           
