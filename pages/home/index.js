@@ -1,4 +1,5 @@
 import React from 'react';
+import SAlert from 'react-s-alert';
 
 // Components
 import AuthContainer from 'src/components/AuthContainer';
@@ -13,6 +14,7 @@ export default class Home extends React.PureComponent {
     return (
       <AuthContainer>
         <ViewsAllPost />
+        <SAlert effect="stackslide" offset={30} stack={{ limit: 1 }} timeout={4000} />
       </AuthContainer>
     );
   }
