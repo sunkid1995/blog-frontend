@@ -49,20 +49,22 @@ export const FORMAT_NUMBER = {
 };
 
 
-const HOME = 'home';
-const CREATE = 'create';
+const NOTIFICATIONS = 'notifications';
+const MESSAGE = 'message';
 
 export const MENU_BAR = {
-  [HOME]: {
+  [NOTIFICATIONS]: {
     enabled: true,
     href: '/',
     title: 'Trang chủ',
+    icon: <i className="far fa-bell" />,
   },
-  [CREATE]: {
+  [MESSAGE]: {
     enabled: true,
     href: '/create',
     title: 'Tạo',
+    icon: <i className="fab fa-facebook-messenger" />,
   },
 };
 
-export const MENU_BAR_IDS = { HOME, CREATE };
+export const MENU_BAR_IDS = { NOTIFICATIONS, MESSAGE };

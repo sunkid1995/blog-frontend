@@ -1,5 +1,7 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import { Col, Card, CardHeader, CardBody, CardFooter, FormGroup, Input, Label, Button } from 'reactstrap';
+import SAlert from 'react-s-alert';
 
 // css
 import css from 'styled-jsx/css';
@@ -10,19 +12,61 @@ import Avatar from 'src/components/Commons/Avatar';
 // Constants
 import { COLOR, FONT_SIZE } from 'src/constants/style-set';
 
-export default class CreatePost extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      contentPost: null,
-    };
-  }
-  componentDidMount() {}
+// withConnect
+import withConnect from './withConnect';
 
-  onChangeGetCreatePost = event => this.setState({ contentPost: event.target.value });
+@withConnect
+export default class CreatePost extends React.Component {
+  static propTypes = {
+    createPost: propTypes.func.isRequired,
+    dataCreatePost: propTypes.object.isRequired,
+    user: propTypes.object.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: null,
+      content: null,
+      images: null,
+    };
+
+    this.createPost = props.createPost.bind(this);
+  }
+
+  componentWillReceiveProps = nextProps => {
+    const { dataCreatePost } = this.props;
+    const { dataCreatePost: nextDataCreatePost } = nextProps;
+    if (dataCreatePost !== nextDataCreatePost) this.handleCheckErr(nextDataCreatePost);
+  }
+
+  handleCheckErr = payload => {
+    if (!this.handleCheckErrorRequest(payload)) return; 
+  }
+
+  handleCheckErrorRequest = payload => {
+    const { error, loading } = payload;
+
+    if (loading) return false;
+
+    if (error !== undefined) {
+      const { response: { data } } = error;
+      const logs = data[0];
+      const { message } = logs;
+      return SAlert.error(`Lỗi: ${message}`, { position: 'top-right' });
+    } else this.setState({ content: null });
+  }
+
+  onChangeGetCreatePost = event => this.setState({ content: event.target.value });
+
+  funcCreatePost = () => {
+    const { user: { _id } } = this.props;
+    const { content, images, title } = this.state;
+    this.createPost({ content, images, _id, title });
+  }
 
   render() {
-    const { contentPost } = this.state;
+    const { content } = this.state;
 
     return (
       <Col sm={{ size: 6, order: 2, offset: 3 }}>
@@ -43,13 +87,13 @@ export default class CreatePost extends React.Component {
                   onChange={this.onChangeGetCreatePost}
                   placeholder="Bạn muốn note gì?"
                   type="textarea"
-                  value={contentPost || ''}
+                  value={content || ''}
                 />
               </Col>
             </FormGroup>
           </CardBody>
           <CardFooter>
-            <Button className="float-right" color="success" outline>
+            <Button className="float-right" color="success" onClick={this.funcCreatePost} outline>
               {'Đăng'}
             </Button>
           </CardFooter>

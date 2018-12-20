@@ -128,7 +128,7 @@ export default class Content extends React.Component {
     const { item } = this.props;
     const { check, getTotalLike } = this.state;
 
-    const { content, authorId: auth } = item;
+    const { content, authorId: auth, image } = item;
     const { username } = auth !== null && auth;
 
     return (
@@ -146,10 +146,12 @@ export default class Content extends React.Component {
           </CardHeader>
           <CardBody>
             <CardText className="content-post">{content}</CardText>
+            {image && 
             <CardImg 
               alt="Card image cap" 
-              src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" top width="100%"
+              src={`http://localhost:8080/${image}`} top width="100%"
             />
+            }
             <p className="actions-post mb-0 p-2 pt-1">
               <i className="far fa-heart" />{' '}
               {getTotalLike}

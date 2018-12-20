@@ -3,6 +3,9 @@ import propTypes from 'prop-types';
 import { Row, Col } from 'reactstrap';
 import css from 'styled-jsx/css';
 
+// Constants
+import { FONT_SIZE } from 'src/constants/style-set';
+
 const CardActions = props => {
   const { checkLike, actionsLike, item } = props;
 
@@ -13,12 +16,12 @@ const CardActions = props => {
           <p className="actions-post mb-0 p-2 pt-1">
             
             {checkLike ?
-              <span>
+              <span className="action-like">
                 <i className="fas fa-heart" />{' '}
                 {'Đã thích'}
               </span>
               :
-              <span>
+              <span className="action-un-like">
                 <i className="far fa-heart" />{' '}
                 {'Thích'}
               </span>
@@ -54,9 +57,17 @@ const styles = css`
     background-color: rgba(29, 33, 41, .04);
   }
 
+  .action-like {
+    font-size: ${FONT_SIZE.TITLE};
+    color: red;
+  }
+
+  .action-un-like {
+    font-size: ${FONT_SIZE.TITLE};
+  }
+
   .actions-post {
-    // margin-bottom: 0px;
-    // padding: 10px;
+    font-size: ${FONT_SIZE.TITLE};
   }
 `;
 

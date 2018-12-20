@@ -17,7 +17,7 @@ import User from 'src/models/User';
 import Avatar from './Avatar';
 import withConnect from './withConnect';
 
-const { HOME, CREATE } = MENU_BAR_IDS;
+const { NOTIFICATIONS, MESSAGE } = MENU_BAR_IDS;
 
 @withConnect
 export default class UserAvatar extends React.PureComponent {
@@ -78,14 +78,14 @@ export default class UserAvatar extends React.PureComponent {
     );
   }
 
-  renderMenubarItem = () => _.map([HOME, CREATE], id => {
-    const { [id]: { enabled, href, title } } = MENU_BAR;
+  renderMenubarItem = () => _.map([MESSAGE ,NOTIFICATIONS], id => {
+    const { [id]: { enabled, href, icon } } = MENU_BAR;
     if (!enabled) return null;
 
     return (
       <NavItem key={`nav-item-${id}`}>
-        <NavLink className="mt-1" href={href}>
-          {title}
+        <NavLink className="mt-1 pt-1 ml-1 mr-1" href={href} style={{ fontSize: 22 }}>
+          {icon}
         </NavLink>
       </NavItem>
     );
