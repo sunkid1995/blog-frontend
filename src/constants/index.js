@@ -51,6 +51,7 @@ export const FORMAT_NUMBER = {
 
 const NOTIFICATIONS = 'notifications';
 const MESSAGE = 'message';
+const CREATE = 'create';
 
 export const MENU_BAR = {
   [NOTIFICATIONS]: {
@@ -61,10 +62,16 @@ export const MENU_BAR = {
   },
   [MESSAGE]: {
     enabled: true,
-    href: '/create',
-    title: 'Tạo',
+    href: '/',
+    title: 'Tin Nhắn',
     icon: <i className="fab fa-facebook-messenger" />,
+  },
+  [CREATE]: {
+    enabled: true,
+    href: null,
+    title: 'Đặng bài',
+    icon: <i className="fas fa-plus-square" />,
   },
 };
 
-export const MENU_BAR_IDS = { NOTIFICATIONS, MESSAGE };
+export const MENU_BAR_IDS = { NOTIFICATIONS, MESSAGE, CREATE };

@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import qs from 'qs';
+// import qs from 'qs';
 
 // Contants
 import { API_CONFIGS } from 'src/constants';
@@ -37,11 +37,18 @@ export function createPost(payload) {
   const action = createAction(SERVICE_API.CREATE_POST);
   const dataKey = 'dataCreatePost';
 
-  const data = qs.stringify({ title, image, content, authorId: _id });
+  // multipart/form-data
+  const bodyFormData = new FormData();
+  bodyFormData.set('title', title);
+  bodyFormData.set('content', content);
+  bodyFormData.set('authorId', _id);
+  bodyFormData.append('image', image);
+
   return (dispatch, getState) => {
     const request = {
       headers: buildHeaders(getState()),
-      data,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } },
+      data: bodyFormData,
       method: POST,
       transformResponse: response =>
         responseInterceptor(response, ({ error }) => error),

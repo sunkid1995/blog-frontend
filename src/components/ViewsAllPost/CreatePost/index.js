@@ -12,15 +12,23 @@ import Avatar from 'src/components/Commons/Avatar';
 // Constants
 import { COLOR, FONT_SIZE } from 'src/constants/style-set';
 
+import UploadImage from './UploadImage';
+
 // withConnect
 import withConnect from './withConnect';
 
 @withConnect
 export default class CreatePost extends React.Component {
   static propTypes = {
+    callbackModal: propTypes.bool,
     createPost: propTypes.func.isRequired,
     dataCreatePost: propTypes.object.isRequired,
+    height: propTypes.number.isRequired,
     user: propTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    callbackModal: false,
   }
 
   constructor(props) {
@@ -28,7 +36,8 @@ export default class CreatePost extends React.Component {
     this.state = {
       title: null,
       content: null,
-      images: null,
+      image: null,
+      resultImg: null,
     };
 
     this.createPost = props.createPost.bind(this);
@@ -54,58 +63,112 @@ export default class CreatePost extends React.Component {
       const logs = data[0];
       const { message } = logs;
       return SAlert.error(`Lỗi: ${message}`, { position: 'top-right' });
-    } else this.setState({ content: null });
+    } else this.setState({ content: null, resultImg: null, image: null });
   }
 
   onChangeGetCreatePost = event => this.setState({ content: event.target.value });
 
   funcCreatePost = () => {
     const { user: { _id } } = this.props;
-    const { content, images, title } = this.state;
-    this.createPost({ content, images, _id, title });
+    const { content, image, title } = this.state;
+    this.createPost({ content, image, _id, title });
   }
 
+  changeFileImage = event => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const resultImg = reader.result;
+      this.setState({ resultImg });
+    };
+
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const files = event.target.files || event.dataTransfer.files;
+
+    if (files) this.setState({ image: files[0] });
+  }
+
+  closeImage = () => this.setState({ image: null, resultImg: null });
+
+  renderCreatePost = () => (
+    <Col className="card-wrap-create-post" sm={{ size: 6, order: 2, offset: 3 }}>
+      {this.cusumerCard()}
+      <style jsx>{styles}</style>
+    </Col>
+  )
+   
+  cusumerCard = () => {
+    const { height } = this.props;
+    const { content, resultImg } = this.state;
+  
+    return (
+      <Card className="card-create-post">
+        <CardHeader>
+          <p className="title-create-post">{'Tạo bài viết'}</p>
+        </CardHeader>
+        <CardBody>
+          <FormGroup row>
+            <Label className="label-avatar" for="create-post" sm={1}>
+              <Avatar size={48} />
+            </Label>
+            <Col sm={11}>
+              <Input
+                className="input-create-post" 
+                id="create-post" 
+                name="post" 
+                onChange={this.onChangeGetCreatePost}
+                placeholder="Bạn muốn note gì?"
+                style={{ height: `${height}px` }}
+                type="textarea"
+                value={content || ''}
+              />
+            </Col>
+          </FormGroup>
+          <UploadImage 
+            closeImage={this.closeImage}
+            resultImg={resultImg}
+          />
+        </CardBody>
+        <CardFooter>
+          <label className="custom-file-upload">
+            <input accept="image/*" onChange={this.changeFileImage} type="file" />
+            <i className="fas fa-cloud-upload-alt mr-1" />
+            <span className="discreption-img">{'Ảnh'}</span>
+          </label>
+
+          <Button className="float-right" color="primary" onClick={this.funcCreatePost}>
+            {'Đăng bài'}
+          </Button>
+        </CardFooter>
+        <style jsx>{styles}</style>
+      </Card>
+    );
+  }
+   
   render() {
-    const { content } = this.state;
+    const { callbackModal } = this.props;
 
     return (
-      <Col sm={{ size: 6, order: 2, offset: 3 }}>
-        <Card className="card-create-post">
-          <CardHeader>
-            <p className="title-create-post">{'Tạo bài viết'}</p>
-          </CardHeader>
-          <CardBody>
-            <FormGroup row>
-              <Label className="label-avatar" for="create-post" sm={1}>
-                <Avatar size={48} />
-              </Label>
-              <Col sm={11}>
-                <Input
-                  className="input-create-post" 
-                  id="create-post" 
-                  name="post" 
-                  onChange={this.onChangeGetCreatePost}
-                  placeholder="Bạn muốn note gì?"
-                  type="textarea"
-                  value={content || ''}
-                />
-              </Col>
-            </FormGroup>
-          </CardBody>
-          <CardFooter>
-            <Button className="float-right" color="success" onClick={this.funcCreatePost} outline>
-              {'Đăng'}
-            </Button>
-          </CardFooter>
-        </Card>
-        <style jsx>{styles}</style>
-      </Col> 
+      <React.Fragment>
+        {callbackModal ? this.cusumerCard() : this.renderCreatePost()}
+      </React.Fragment>
     );
   }
 }
 const styles = css`
   :global(.card-create-post) {
     box-shadow: rgba(0,0,0,0.3) 0px 5px 30px 0px;
+  }
+
+  :global(.card-wrap-create-post) {
+    display: none;
+  }
+
+  .discreption-img {
+    color: ${COLOR.BLACK_PALE};
+    font-size: ${FONT_SIZE.NORMAL};
   }
 
   :global(.title-create-post) {
@@ -115,14 +178,31 @@ const styles = css`
     font-weight: 600;
   }
 
-  :global(.input-create-post) {
-    min-height: 100px !important;
+  input[type="file"] {
+    display: none;
+  }
+
+  .custom-file-upload {
+    border-radius: 1.25rem !important
+    border: 1px solid #eff1f3;
+    display: inline-block;
+    padding: 3px 15px;
+    cursor: pointer;
+    background: #eff1f3;
+  }
+
+  .custom-file-upload:hover {
+    background-color: rgba(29, 33, 41, .04);
   }
 
   @media (max-width: 480px) {
 
     :global(.label-avatar) {
       display: none;
+    }
+
+    :global(.card-wrap-create-post) {
+      display: initial;
     }
 
   }
