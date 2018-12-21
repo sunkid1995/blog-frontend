@@ -80,7 +80,7 @@ export default class ViewsAllPost extends React.Component {
     return (
       <Container fluid>
         <Row className="wrap-create-post">
-          <CreatePost />
+          <CreatePost callbackModal={false} height={100} />
         </Row>
         {data !== undefined && _.map(data, this.renderContentPost)}
         <style jsx>{styles}</style>
