@@ -7,9 +7,13 @@ const UploadImage = props => {
   return (
     <div>
       {resultImg &&
-      <div className="dialog">
-        <a className="close-thik" href="#" onClick={closeImage} />
-        <img className="show-image" id="output" id="output" src={resultImg} />
+      <div className="container">
+        <img alt="Avatar" className="image" src={resultImg} />
+        <div className="middle">
+          <div className="text">
+            <i className="fas fa-trash-alt" onClick={closeImage} />
+          </div>
+        </div>
       </div>
       }
       <style jsx>{styles}</style>
@@ -28,40 +32,48 @@ UploadImage.defaultProps = {
 
 const styles = css`
 
-  input[type="file"] {
-    display: none;
-  }
+.container {
+  position: relative;
+  width: 50%;
+  margin-left: 50px;
+}
 
-  [class*='close-'] {
-    color: white;
-    font: 14px/100% arial, sans-serif;
-    position: absolute;
-    right: 5px;
-    text-decoration: none;
-    text-shadow: 0 1px 0 #fff;
-    top: 5px;
-  }
-  
-  .close-thik:after {
-    content: '✖'; /* UTF-8 symbol */
-  }
-  
-  .dialog {
-    left: 45px;
-    background: #ddd;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    float: left;
-    height: 200px;
-    width: 150px;
-    margin: 20px;
-    position: relative;
-  }
+.image {
+  opacity: 1;
+  display: block;
+  width: 50%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
 
-  .show-image {
-    height: 200px;
-    width: 150px;
-  }
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 28%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: #00bc3f;
+  color: white;
+  font-size: 20px;
+  padding: 5px 13px;
+  border-radius: 0.25rem !important;
+  cursor: pointer;
+}
 `;
 
 export default UploadImage;

@@ -142,7 +142,7 @@ export default class CreatePost extends React.Component {
             <span className="discreption-img">{'Ảnh'}</span>
           </label>
 
-          <Button className="float-right" color="primary" onClick={this.funcCreatePost}>
+          <Button className="float-right" color="success" onClick={this.funcCreatePost}>
             {'Đăng bài'}
           </Button>
         </CardFooter>
