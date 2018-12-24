@@ -29,7 +29,7 @@ Button.propTypes = {
 
 Button.defaultProps = {
   block: false,
-  color: 'pink',
+  color: 'blue',
   loading: false,
   size: null,
 };
@@ -37,7 +37,7 @@ Button.defaultProps = {
 const loadingStyles = css`
   .btn-accessory-right {
     position: absolute !important;
-    right: 2rem;
+    right: 3.3rem;
   }
 `;
 

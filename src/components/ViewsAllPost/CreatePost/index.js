@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { Col, Card, CardHeader, CardBody, CardFooter, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Col, Card, CardHeader, CardBody, CardFooter, FormGroup, Input, Label } from 'reactstrap';
 import SAlert from 'react-s-alert';
 
 // css
@@ -8,6 +8,7 @@ import css from 'styled-jsx/css';
 
 // Component
 import Avatar from 'src/components/Commons/Avatar';
+import Button from 'src/components/Commons/Button';
 
 // Constants
 import { COLOR, FONT_SIZE } from 'src/constants/style-set';
@@ -104,8 +105,10 @@ export default class CreatePost extends React.Component {
   )
    
   cusumerCard = () => {
-    const { height } = this.props;
+    const { height, dataCreatePost } = this.props;
     const { content, resultImg } = this.state;
+    const { loading } = dataCreatePost;
+    console.log(loading, 'loading');
   
     return (
       <Card className="card-create-post">
@@ -115,7 +118,7 @@ export default class CreatePost extends React.Component {
         <CardBody>
           <FormGroup row>
             <Label className="label-avatar" for="create-post" sm={1}>
-              <Avatar size={48} />
+              <Avatar size={30} />
             </Label>
             <Col sm={11}>
               <Input
@@ -142,7 +145,7 @@ export default class CreatePost extends React.Component {
             <span className="discreption-img">{'Ảnh'}</span>
           </label>
 
-          <Button className="float-right" color="success" onClick={this.funcCreatePost}>
+          <Button className="float-right" loading={loading} onClick={this.funcCreatePost}>
             {'Đăng bài'}
           </Button>
         </CardFooter>
