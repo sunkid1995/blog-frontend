@@ -137,11 +137,9 @@ export default class Content extends React.Component {
           <CardHeader>
             <CardTitle>
               <Avatar size={48} />
-              <span>
-                <a className="ml-2 card-user-name">
-                  {username}
-                </a>
-              </span>
+              <a className="ml-2 card-user-name" href="/demo" >
+                {username}
+              </a>
             </CardTitle>
           </CardHeader>
           <CardBody>

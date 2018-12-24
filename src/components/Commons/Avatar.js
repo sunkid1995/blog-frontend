@@ -14,6 +14,7 @@ const Avatar = payload => {
           border-radius: 50%;
           width: ${size}px;
           height: ${size}px;
+          cursor: pointer;
         }
       `}</style>
     </React.Fragment>
