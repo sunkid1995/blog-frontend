@@ -21,6 +21,7 @@ import withConnect from './withConnect';
 export default class CreatePost extends React.Component {
   static propTypes = {
     callbackModal: propTypes.bool,
+    closeToggle: propTypes.func.isRequired,
     createPost: propTypes.func.isRequired,
     dataCreatePost: propTypes.object.isRequired,
     height: propTypes.number.isRequired,
@@ -63,7 +64,10 @@ export default class CreatePost extends React.Component {
       const logs = data[0];
       const { message } = logs;
       return SAlert.error(`Lỗi: ${message}`, { position: 'top-right' });
-    } else this.setState({ content: null, resultImg: null, image: null });
+    } else {
+      this.setState({ content: null, resultImg: null, image: null });
+      if (this.props.closeToggle !== undefined) this.props.closeToggle();
+    }
   }
 
   onChangeGetCreatePost = event => this.setState({ content: event.target.value });
