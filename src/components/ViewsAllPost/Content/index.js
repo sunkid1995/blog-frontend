@@ -12,7 +12,6 @@ import { FONT_SIZE } from 'src/constants/style-set';
 // Component
 import Avatar from 'src/components/Commons/Avatar';
 import CardActions from '../CardActions';
-import CardCreateComment from '../CardCreateComment';
 import CardGetComment from '../CardGetComment';
 
 
@@ -155,7 +154,6 @@ export default class Content extends React.Component {
               {getTotalLike}
             </p>
           </CardBody>
-          
           <CardFooter className="card-actions">
             <CardActions 
               actionsLike={this.actionsLike} 
@@ -163,13 +161,10 @@ export default class Content extends React.Component {
               item={item}
             />
           </CardFooter>
-
           <CardFooter className="card-comment">
-            <CardGetComment />
-          </CardFooter>
-
-          <CardFooter className="card-user-create-comment">
-            <CardCreateComment />
+            <CardGetComment 
+              item={item}
+            />
           </CardFooter>
         </Card>
         <style jsx>{styles}</style>

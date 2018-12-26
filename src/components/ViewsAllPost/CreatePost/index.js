@@ -108,7 +108,6 @@ export default class CreatePost extends React.Component {
     const { height, dataCreatePost } = this.props;
     const { content, resultImg } = this.state;
     const { loading } = dataCreatePost;
-    console.log(loading, 'loading');
   
     return (
       <Card className="card-create-post">

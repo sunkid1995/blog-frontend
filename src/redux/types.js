@@ -21,6 +21,7 @@ export const SERVICE_API = {
   CREATE_LIKE: 'serviceApi/CREATE_LIKE',
   UNLIKE_LIKE: 'serviceApi/UNLIKE_LIKE',
   CREATE_POST: 'serviceApi/CREATE_POST',
+  CREATE_COMMENT: 'serviceApi/CREATE_COMMENT',
 };
 
 export const SHARED = {
