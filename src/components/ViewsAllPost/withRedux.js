@@ -15,6 +15,7 @@ function mapDispatchToProps(dispatch) {
     getAllLike: payload => dispatch(serviceApi.getAllLike(payload)),
     createLike: payload => dispatch(serviceApi.createLike(payload)),
     unLike: payload => dispatch(serviceApi.unLike(payload)),
+    getAllComment: payload => dispatch(serviceApi.getAllComment(payload)),
   };
 }
 

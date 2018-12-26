@@ -22,7 +22,7 @@ import withConnect from './withConnect';
 export default class CreatePost extends React.Component {
   static propTypes = {
     callbackModal: propTypes.bool,
-    closeToggle: propTypes.func.isRequired,
+    closeToggle: propTypes.func,
     createPost: propTypes.func.isRequired,
     dataCreatePost: propTypes.object.isRequired,
     height: propTypes.number.isRequired,
