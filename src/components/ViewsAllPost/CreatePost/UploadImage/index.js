@@ -2,6 +2,9 @@ import React from 'react';
 import propTypes from 'prop-types';
 import css from 'styled-jsx/css';
 
+// Constants
+import { COLOR } from 'src/constants/style-set';
+
 const UploadImage = props => {
   const { resultImg, closeImage } = props;
   return (
@@ -35,7 +38,7 @@ const styles = css`
 .container {
   position: relative;
   width: 50%;
-  margin-left: 50px;
+  margin-left: 25px;
 }
 
 .image {
@@ -67,7 +70,7 @@ const styles = css`
 }
 
 .text {
-  background-color: #00bc3f;
+  background-color: ${COLOR.BLUE};
   color: white;
   font-size: 20px;
   padding: 5px 13px;

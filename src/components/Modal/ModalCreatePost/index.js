@@ -17,7 +17,7 @@ export default class ModalCreatePost extends React.Component {
     const { modalToggle, toggleModalCreatePost } = this.props;
     return (
       <div>
-        <Modal isOpen={modalToggle} size="lg" toggle={toggleModalCreatePost}>
+        <Modal isOpen={modalToggle} toggle={toggleModalCreatePost}>
           <CreatePost callbackModal closeToggle={this.closeToggle} height={200} />
         </Modal>
       </div>
