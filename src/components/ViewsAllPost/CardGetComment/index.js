@@ -16,6 +16,7 @@ import { FORMATSDATE } from 'src/constants';
 import CommentModel from 'src/models/CommentModel';
 
 import CardCreateComment from '../CardCreateComment';
+import Control from './Control';
 
 // withConnect
 import withConnect from './withConnect';
@@ -74,7 +75,7 @@ export default class CardGetComment extends React.Component {
     const getTime = moment(createdAt).format(FORMATSDATE.TIME);
     const logDateTime = moment(createdAt).startOf(getTime)
       .fromNow();
-      
+
     return (
       <React.Fragment key={`comment-${index}`}>
         <Media className="mt-1 wraper-comment">
@@ -85,7 +86,8 @@ export default class CardGetComment extends React.Component {
             <a className="mb-1 pl-2 p-1 user-name" href="/">{username}</a>
             <span className="mb-1 comment-css">{comment}</span>
           </Media>
-          <i className="fas fa-ellipsis-h icon-controll ml-1 mt-3" />
+          {/* <i className="fas fa-ellipsis-h icon-controll ml-1 mt-3" /> */}
+          <Control index={index} />
         </Media>
         <a className="ml-5 log-time">{logDateTime}</a>
       </React.Fragment>
