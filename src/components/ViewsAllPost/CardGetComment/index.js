@@ -3,14 +3,20 @@ import _ from 'lodash';
 import propTypes from 'prop-types';
 import { Media } from 'reactstrap';
 import css from 'styled-jsx/css';
+import moment from 'moment';
 
 // Component
 import Avatar from 'src/components/Commons/Avatar';
 
 // Constants
 import { FONT_SIZE, COLOR } from 'src/constants/style-set';
+import { FORMATSDATE } from 'src/constants';
+
+// Models
+import CommentModel from 'src/models/CommentModel';
 
 import CardCreateComment from '../CardCreateComment';
+import Control from './Control';
 
 // withConnect
 import withConnect from './withConnect';
@@ -18,6 +24,9 @@ import withConnect from './withConnect';
 @withConnect
 export default class CardGetComment extends React.Component {
   static propTypes = {
+    allComment: propTypes.shape({
+      data: propTypes.arrayOf(propTypes.instanceOf(CommentModel)),
+    }).isRequired,
     createComment: propTypes.func.isRequired,
     item: propTypes.object.isRequired,
     user: propTypes.object.isRequired,
@@ -35,7 +44,11 @@ export default class CardGetComment extends React.Component {
     this.createComment = props.createComment.bind(this);
   }
 
-  componentDidMount() {}
+  componentWillReceiveProps = nextProps => {
+    const { allComment } = this.props;
+    const { allComment: nextAllComment } = nextProps;
+    if (allComment !== nextAllComment) this.setState({ arrComment: nextAllComment.data });
+  }
 
   onChangeInput = event => this.setState({ comment: event.target.value });
 
@@ -47,34 +60,55 @@ export default class CardGetComment extends React.Component {
     if (comment !== null && comment !== '') {
       const newItem = { username, userId, postId, comment };
 
+      const arr = { userId: { username }, postId: { _id: postId }, comment, createdAt: moment().format() };
       this.createComment(newItem);
       setTimeout(() => {
-        this.setState({ arrComment: [...this.state.arrComment, newItem], comment: null, postId: null });
+        this.setState({ arrComment: [...this.state.arrComment, arr], comment: null, postId: null });
       }, 300);
     } 
   }
 
   renderComment = (item, index) => {
-    const { username, comment } = item;
+    const { userId: { username }, comment, createdAt } = item;
+
+    moment.locale('vi');
+    const getTime = moment(createdAt).format(FORMATSDATE.TIME);
+    const logDateTime = moment(createdAt).startOf(getTime)
+      .fromNow();
+
     return (
-      <Media className="mt-1 wraper-comment" key={`comment-${index}`}>
-        <Media href="#" left>
-          <Avatar size={35} />
+      <React.Fragment key={`comment-${index}`}>
+        <Media className="mt-1 wraper-comment">
+          <Media href="#" left>
+            <Avatar size={35} />
+          </Media>
+          <Media body className="content-comment ml-2 pt-1" >
+            <a className="mb-1 pl-2 p-1 user-name" href="/">{username}</a>
+            <span className="mb-1 comment-css">{comment}</span>
+          </Media>
+          {/* <i className="fas fa-ellipsis-h icon-controll ml-1 mt-3" /> */}
+          <Control index={index} />
         </Media>
-        <Media body className="content-comment ml-2 pt-1" >
-          <a className="mb-1 pl-2 p-1 user-name" href="/">{username}</a>
-          <span className="mb-1">{comment}</span>
-        </Media>
-      </Media>
+        <a className="ml-5 log-time">{logDateTime}</a>
+      </React.Fragment>
     );
   }
 
   render() {
     const { item } = this.props;
     const { comment, arrComment } = this.state;
+
+    const comments = _.clone(arrComment);
+
+    _.each(comments, comment => {
+      comment.postIds = comment.postId._id;
+    });
+
+    const groupByComment = _.groupBy(comments, 'postIds');
+
     return (
       <React.Fragment>
-        {arrComment.length > 0 && _.map(arrComment, this.renderComment)}
+        {groupByComment[item._id] !== undefined && _.map(groupByComment[item._id], this.renderComment)}
         <CardCreateComment 
           comment={comment}
           getPostEventClick={this.getPostEventClick}
@@ -100,10 +134,24 @@ const styles = css`
   }
   
   :global(.user-name) {
-    color: ${COLOR.BLUE}!important;
+    color: ${COLOR.BLUE} !important;
   }
 
   :global(.user-name:hover) {
-    color: ${COLOR.BLUE}!important;
+    color: ${COLOR.BLUE} !important;
+  }
+
+  :global(.log-time) {
+    font-size: ${FONT_SIZE.SMALL};
+    color: ${COLOR.GRAY} !important;
+  }
+
+  :global(.icon-controll) {
+    font-size: ${FONT_SIZE.SMALL};
+    color: ${COLOR.GRAY} !important;
+    cursor: pointer;
+  }
+  :global(.comment-css) {
+    cursor: auto;
   }
 `;

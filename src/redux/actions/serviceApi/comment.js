@@ -29,7 +29,7 @@ export function getAllComment(payload) {
       method: GET,
       transformResponse: response =>
         responseInterceptor(response, ({ data }) => CommentModel.buildArray(data)),
-      url: '',
+      url: '/comment',
     };
     return dispatch(action({ request, dataKey }));
   };
@@ -37,7 +37,6 @@ export function getAllComment(payload) {
 
 export function createComment(payload) {
   const { postId, userId, comment } = payload;
-  console.log(payload, 'payload');
   const action = createAction(SERVICE_API.CREATE_COMMENT);
   const dataKey = 'handleComment';
 

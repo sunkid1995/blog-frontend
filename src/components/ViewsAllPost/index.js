@@ -19,6 +19,7 @@ export default class ViewsAllPost extends React.Component {
     allLike: propTypes.object.isRequired,
     allPost: propTypes.object.isRequired,
     createLike: propTypes.func.isRequired,
+    getAllComment: propTypes.func.isRequired,
     getAllLike: propTypes.func.isRequired,
     getAllPost: propTypes.func.isRequired,
     unLike: propTypes.func.isRequired,
@@ -34,6 +35,7 @@ export default class ViewsAllPost extends React.Component {
     this.getAllLike = props.getAllLike.bind(this);
     this.createLike = props.createLike.bind(this);
     this.unLike = props.unLike.bind(this);
+    this.getAllComment = props.getAllComment.bind(this);
   }
 
   componentDidMount = () => this.requestGetAllPostToAPI()
@@ -54,6 +56,9 @@ export default class ViewsAllPost extends React.Component {
 
     // get all like in post
     this.getAllLike({ page, perPage });
+
+    // get all comment in post
+    this.getAllComment({ page, perPage });
   }
 
   renderContentPost = (item, index) => {

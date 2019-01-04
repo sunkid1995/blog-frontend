@@ -8,5 +8,6 @@ export const COLOR = {
 export const FONT_SIZE = {
   TITLE: '15px',
   NORMAL: '14px',
+  SMALL: '12px',
 };
 
