@@ -26,9 +26,10 @@ const FLOAT = Joi.number().empty(['', null]).default(0);
 const INTEGER = Joi.number().integer().default(0);
 const OBJECT = Joi.object().empty([{}, null]);
 const STRING = Joi.string().empty(['', null]);
+const ARRAY = Joi.array().empty([[], null]);
 
 export const COMMON_SCHEMAS = {
-  BOOLEAN, DATE, FLOAT, INTEGER, OBJECT, STRING,
+  BOOLEAN, DATE, FLOAT, INTEGER, OBJECT, STRING, ARRAY,
   ID: INTEGER.min(0).required(),
   INTEGERS_ARRAY: Joi.array().items(INTEGER).empty([null]).default([]),
   OBJECTS_ARRAY: Joi.array().items(OBJECT).empty([null]).default([]),

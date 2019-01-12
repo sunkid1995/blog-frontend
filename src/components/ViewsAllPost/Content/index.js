@@ -21,7 +21,6 @@ import withConnect from './withConnect';
 @withConnect
 export default class Content extends React.Component {
   static propTypes = {
-    allLike: propTypes.object.isRequired,
     createLike: propTypes.func.isRequired,
     index: propTypes.number.isRequired,
     item: propTypes.object.isRequired,
@@ -32,103 +31,92 @@ export default class Content extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      allLike: [],
       check: false,
       likebyPost: {},
       getTotalLike: 0,
     };
   }
+  // logicCheckLike = data => {
+  //   const { item, user: { _id: userId } } = this.props;
 
-  componentWillReceiveProps = nextProps => {
-    const { allLike } = this.props;
-    const { allLike: nextAllLike } = nextProps;
-    if (allLike !== nextAllLike) {
-      const { data } = nextAllLike;
-      if (data !== undefined) this.setState({ allLike: data });
-      this.logicCheckLike(data);
-    }
-  }
+  //   // check actions like post
+  //   _.each(data, likeItem => {
+  //     const { postId, userId: user } = likeItem;
+  //     if (postId !== null) {
+  //       const { _id } = postId;
+  //       const { _id: idPost } = item;
+  //       if (_id === idPost) {
+  //         const den = _.filter(user, item => item._id === userId);
+  //         if (den.length > 0) this.setState({ check: true });
+  //         else this.setState({ check: false });
+  //       }
+  //     }
+  //   });
 
-  logicCheckLike = data => {
-    const { item, user: { _id: userId } } = this.props;
+  //   // check total like
+  //   const getLike = _.clone(data);
+  //   _.each(getLike, dataLike => {
+  //     const { postId } = dataLike;
+  //     if (postId !== null) {
+  //       const { _id } = postId;
+  //       return dataLike.postIds = _id;
+  //     }
+  //   });
 
-    // check actions like post
-    _.each(data, likeItem => {
-      const { postId, userId: user } = likeItem;
-      if (postId !== null) {
-        const { _id } = postId;
-        const { _id: idPost } = item;
-        if (_id === idPost) {
-          const den = _.filter(user, item => item._id === userId);
-          if (den.length > 0) this.setState({ check: true });
-          else this.setState({ check: false });
-        }
-      }
-    });
+  //   const likebyPost = _.groupBy(getLike, 'postIds');
+  //   if (likebyPost[item._id] !== undefined) this.setState({ getTotalLike: likebyPost[item._id][0].totalLike });
+  //   else this.setState({ getTotalLike: 0 });
+  // }
 
-    // check total like
-    const getLike = _.clone(data);
-    _.each(getLike, dataLike => {
-      const { postId } = dataLike;
-      if (postId !== null) {
-        const { _id } = postId;
-        return dataLike.postIds = _id;
-      }
-    });
+  // actionsLike = payload => {
+  //   const { user: { _id: userId } } = this.props;
+  //   const { allLike } = this.state;
+  //   const { checkLike, item } = payload;
 
-    const likebyPost = _.groupBy(getLike, 'postIds');
-    if (likebyPost[item._id] !== undefined) this.setState({ getTotalLike: likebyPost[item._id][0].totalLike });
-    else this.setState({ getTotalLike: 0 });
-  }
+  //   const { _id: postId } = item;
 
-  actionsLike = payload => {
-    const { user: { _id: userId } } = this.props;
-    const { allLike } = this.state;
-    const { checkLike, item } = payload;
+  //   if (checkLike === true) {
+  //     const fillterLike = _.filter(allLike, like => {
+  //       const { postId: postIdOfLike } = like;
+  //       if (postIdOfLike !== null) return postIdOfLike._id === postId;
+  //     });
 
-    const { _id: postId } = item;
+  //     if (fillterLike.length > 0) {
+  //       const totalLike = fillterLike[0].totalLike > 0 ? fillterLike[0].totalLike - 1 : 0;
+  //       this.props.unLike({ postId, userId, totalLike });
+  //     } else {
+  //       const totalLike = 0;
+  //       this.props.unLike({ postId, userId, totalLike });
+  //     }
+  //     this.setState({ check: false, getTotalLike: this.state.getTotalLike - 1 });
+  //   } else {
+  //     const { _id: postId } = item;
 
-    if (checkLike === true) {
-      const fillterLike = _.filter(allLike, like => {
-        const { postId: postIdOfLike } = like;
-        if (postIdOfLike !== null) return postIdOfLike._id === postId;
-      });
-
-      if (fillterLike.length > 0) {
-        const totalLike = fillterLike[0].totalLike > 0 ? fillterLike[0].totalLike - 1 : 0;
-        this.props.unLike({ postId, userId, totalLike });
-      } else {
-        const totalLike = 0;
-        this.props.unLike({ postId, userId, totalLike });
-      }
-      this.setState({ check: false, getTotalLike: this.state.getTotalLike - 1 });
-    } else {
-      const { _id: postId } = item;
-
-      const fillterLike = _.filter(allLike, like => {
-        const { postId: postIdOfLike } = like;
-        if (postIdOfLike !== null) return postIdOfLike._id === postId;
-      });
+  //     const fillterLike = _.filter(allLike, like => {
+  //       const { postId: postIdOfLike } = like;
+  //       if (postIdOfLike !== null) return postIdOfLike._id === postId;
+  //     });
       
-      const totalLike = 1;
-      if (fillterLike.length > 0) {
-        const totalLike = fillterLike[0].totalLike + 1;
-        this.setState({ getTotalLike: this.state.getTotalLike + 1 });
-        this.props.createLike({ postId, userId, totalLike });
-      } else {
-        this.setState({ getTotalLike: totalLike });
-        this.props.createLike({ postId, userId, totalLike });
-      }
-      this.setState({ check: true });
-    }
-  }
+  //     const totalLike = 1;
+  //     if (fillterLike.length > 0) {
+  //       const totalLike = fillterLike[0].totalLike + 1;
+  //       this.setState({ getTotalLike: this.state.getTotalLike + 1 });
+  //       this.props.createLike({ postId, userId, totalLike });
+  //     } else {
+  //       this.setState({ getTotalLike: totalLike });
+  //       this.props.createLike({ postId, userId, totalLike });
+  //     }
+  //     this.setState({ check: true });
+  //   }
+  // }
   
   render() {
     const { item } = this.props;
     const { check, getTotalLike } = this.state;
 
-    const { content, authorId: auth, image } = item;
-    const { username } = auth !== null && auth;
+    const { content, author, image } = item;
+    const { username } = author !== null && author;
+
 
     return (
       <Col sm={{ size: 6, order: 2, offset: 3 }}>

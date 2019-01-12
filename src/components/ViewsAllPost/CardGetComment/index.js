@@ -12,9 +12,6 @@ import Avatar from 'src/components/Commons/Avatar';
 import { FONT_SIZE, COLOR } from 'src/constants/style-set';
 import { FORMATSDATE } from 'src/constants';
 
-// Models
-import CommentModel from 'src/models/CommentModel';
-
 import CardCreateComment from '../CardCreateComment';
 import Control from './Control';
 
@@ -24,9 +21,6 @@ import withConnect from './withConnect';
 @withConnect
 export default class CardGetComment extends React.Component {
   static propTypes = {
-    allComment: propTypes.shape({
-      data: propTypes.arrayOf(propTypes.instanceOf(CommentModel)),
-    }).isRequired,
     createComment: propTypes.func.isRequired,
     item: propTypes.object.isRequired,
     user: propTypes.object.isRequired,
@@ -44,10 +38,12 @@ export default class CardGetComment extends React.Component {
     this.createComment = props.createComment.bind(this);
   }
 
-  componentWillReceiveProps = nextProps => {
-    const { allComment } = this.props;
-    const { allComment: nextAllComment } = nextProps;
-    if (allComment !== nextAllComment) this.setState({ arrComment: nextAllComment.data });
+  componentDidMount() {
+    const { item } = this.props;
+    if (item) {
+      const { comments } = item;
+      this.setState({ arrComment: comments });
+    }
   }
 
   onChangeInput = event => this.setState({ comment: event.target.value });
@@ -60,16 +56,21 @@ export default class CardGetComment extends React.Component {
     if (comment !== null && comment !== '') {
       const newItem = { username, userId, postId, comment };
 
-      const arr = { userId: { username }, postId: { _id: postId }, comment, createdAt: moment().format() };
+      const arr = { 
+        comment: { content: comment, userId, createdAt: moment().format() },
+        user: { _id: userId, username },
+      };
+  
       this.createComment(newItem);
+
       setTimeout(() => {
-        this.setState({ arrComment: [...this.state.arrComment, arr], comment: null, postId: null });
-      }, 300);
+        this.setState({ arrComment: [...this.state.arrComment, arr], comment: null });
+      }, 100);
     } 
   }
 
   renderComment = (item, index) => {
-    const { userId: { username }, comment, createdAt } = item;
+    const { comment: { content, _id, createdAt } , user: { username } } = item;
 
     moment.locale('vi');
     const getTime = moment(createdAt).format(FORMATSDATE.TIME);
@@ -84,10 +85,9 @@ export default class CardGetComment extends React.Component {
           </Media>
           <Media body className="content-comment ml-2 pt-1" >
             <a className="mb-1 pl-2 p-1 user-name" href="/">{username}</a>
-            <span className="mb-1 comment-css">{comment}</span>
+            <span className="mb-1 comment-css">{content}</span>
           </Media>
-          {/* <i className="fas fa-ellipsis-h icon-controll ml-1 mt-3" /> */}
-          <Control index={index} />
+          <Control index={index} post={_id} />
         </Media>
         <a className="ml-5 log-time">{logDateTime}</a>
       </React.Fragment>
@@ -98,17 +98,9 @@ export default class CardGetComment extends React.Component {
     const { item } = this.props;
     const { comment, arrComment } = this.state;
 
-    const comments = _.clone(arrComment);
-
-    _.each(comments, comment => {
-      comment.postIds = comment.postId._id;
-    });
-
-    const groupByComment = _.groupBy(comments, 'postIds');
-
     return (
       <React.Fragment>
-        {groupByComment[item._id] !== undefined && _.map(groupByComment[item._id], this.renderComment)}
+        {_.map(arrComment, this.renderComment)}
         <CardCreateComment 
           comment={comment}
           getPostEventClick={this.getPostEventClick}

@@ -5,6 +5,9 @@ import { Container, Row } from 'reactstrap';
 
 import css from 'styled-jsx/css';
 
+// Models
+import PostModel from 'src/models/PostModel';
+
 // Component
 import Loading from 'src/components/Commons/Loading';
 import Content from './Content';
@@ -16,11 +19,10 @@ import withRedux from './withRedux';
 @withRedux
 export default class ViewsAllPost extends React.Component {
   static propTypes = {
-    allLike: propTypes.object.isRequired,
-    allPost: propTypes.object.isRequired,
+    allPost: propTypes.shape({
+      data: propTypes.arrayOf(propTypes.instanceOf(PostModel)),
+    }).isRequired,
     createLike: propTypes.func.isRequired,
-    getAllComment: propTypes.func.isRequired,
-    getAllLike: propTypes.func.isRequired,
     getAllPost: propTypes.func.isRequired,
     unLike: propTypes.func.isRequired,
   }
@@ -32,10 +34,8 @@ export default class ViewsAllPost extends React.Component {
     };
     
     this.getAllPost = props.getAllPost.bind(this);
-    this.getAllLike = props.getAllLike.bind(this);
     this.createLike = props.createLike.bind(this);
     this.unLike = props.unLike.bind(this);
-    this.getAllComment = props.getAllComment.bind(this);
   }
 
   componentDidMount = () => this.requestGetAllPostToAPI()
@@ -53,18 +53,11 @@ export default class ViewsAllPost extends React.Component {
 
     // get all post
     this.getAllPost({ page, perPage });
-
-    // get all like in post
-    this.getAllLike({ page, perPage });
-
-    // get all comment in post
-    this.getAllComment({ page, perPage });
   }
 
   renderContentPost = (item, index) => {
-    const { allLike } = this.props;
     const props = {
-      item, index, allLike,
+      item, index,
       createLike: this.createLike,
       unLike: this.unLike,
     };

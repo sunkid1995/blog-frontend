@@ -8,6 +8,7 @@ import { FONT_SIZE, COLOR } from 'src/constants/style-set';
 export default class Control extends React.Component {
   static propTypes = {
     index: propTypes.number.isRequired,
+    post: propTypes.string.isRequired,
   }
 
   constructor() {
@@ -24,16 +25,16 @@ export default class Control extends React.Component {
   togglePopover = () => this.setState({ popover: !this.state.popover });
 
   render() {
-    const { index } = this.props;
+    const { index, post } = this.props;
     const { tooltip, popover } = this.state;
     return (
       <React.Fragment key={`logs-${index}`}>
-        <i className="fas fa-ellipsis-h icon-controll ml-1 mt-3" id={`logs_control_${index}`} onClick={this.togglePopover} />
-        <Tooltip isOpen={tooltip} placement="top" target={`logs_control_${index}`} toggle={this.toggleTooltip}>
+        <i className="fas fa-ellipsis-h icon-controll ml-1 mt-3" id={`logs_control_${index}_${post}`} onClick={this.togglePopover} />
+        <Tooltip isOpen={tooltip} placement="top" target={`logs_control_${index}_${post}`} toggle={this.toggleTooltip}>
           <p className="logs-control">{'Chỉnh sửa hoặc xoá bình luận này'}</p>
         </Tooltip>
 
-        <Popover isOpen={popover} placement="bottom" target={`logs_control_${index}`} toggle={this.togglePopover} >
+        <Popover isOpen={popover} placement="bottom" target={`logs_control_${index}_${post}`} toggle={this.togglePopover} >
           <p className="item-control">{'Chỉnh sửa'}</p>
           <p className="item-control">{'Xoá'}</p>
         </Popover>
