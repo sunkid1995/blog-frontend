@@ -8,6 +8,7 @@ export default class PostModel extends BaseModel {
       _id: STRING,
       author: OBJECT,
       comments: ARRAY,
+      likes: ARRAY,
       content: STRING,
       image: STRING,
       createdAt: DATE,
