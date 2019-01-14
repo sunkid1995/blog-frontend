@@ -37,7 +37,7 @@ Button.defaultProps = {
 const loadingStyles = css`
   .btn-accessory-right {
     position: absolute !important;
-    right: 3.3rem;
+    right: 2rem;
   }
 `;
 

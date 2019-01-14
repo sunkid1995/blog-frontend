@@ -2,12 +2,14 @@ import _ from 'lodash';
 import React from 'react';
 import propTypes from 'prop-types';
 import { Col, Card, CardTitle, CardImg, CardText, CardBody,CardFooter, CardHeader } from 'reactstrap';
+import moment from 'moment';
 
 // css
 import css from 'styled-jsx/css';
 
 // Constants
-import { FONT_SIZE } from 'src/constants/style-set';
+import { FORMATSDATE } from 'src/constants';
+import { FONT_SIZE, COLOR } from 'src/constants/style-set';
 
 // Component
 import Avatar from 'src/components/Commons/Avatar';
@@ -37,9 +39,6 @@ export default class Content extends React.Component {
     };
   }
 
-  componentWillUnmount() {
-    console.log('duma');
-  }
   componentDidMount() {
     const { item, user: { _id } } = this.props;
     const { likes } = item;
@@ -80,18 +79,26 @@ export default class Content extends React.Component {
     const { item } = this.props;
     const { check, totalLike } = this.state;
 
-    const { content, author, image } = item;
+    const { content, author, image, createdAt } = item;
     const { username } = author !== null && author;
+
+    moment.locale('vi');
+    const getTime = moment(createdAt).format(FORMATSDATE.TIME);
+    const logTime = moment(createdAt).startOf(getTime)
+      .fromNow();
 
     return (
       <Col sm={{ size: 6, order: 2, offset: 3 }}>
         <Card className="card-content">
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="wrap-title">
               <Avatar size={48} />
-              <a className="ml-2 card-user-name" href="/demo" >
-                {username}
-              </a>
+              <div className="wrap-info">
+                <a className="ml-2 card-user-name" href="/demo" >
+                  {username}
+                </a>
+                <a className="log-time-post ml-2">{logTime}</a>
+              </div>
             </CardTitle>
           </CardHeader>
           <CardBody>
@@ -131,6 +138,10 @@ const styles = css`
     box-shadow: rgba(0,0,0,0.3) 0px 5px 30px 0px;
   }
 
+  :global(.wrap-title) {
+    display: flex;
+  }
+
   :global(.card-user-name) {
     color: #365899 !important;
     cursor: pointer;
@@ -141,5 +152,16 @@ const styles = css`
 
   :global(.content-post) {
     font-size: ${FONT_SIZE.NORMAL};
+  }
+
+  .wrap-info {
+    display: grid;
+
+  }
+
+  .log-time-post {
+    font-size: ${FONT_SIZE.SMALL};
+    color: ${COLOR.GRAY} !important;
+    font-weight: 400;
   }
 `;
