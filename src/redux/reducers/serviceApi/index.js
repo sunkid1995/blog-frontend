@@ -17,11 +17,9 @@ const INITIAL_STATE = {
   passwordForgotten: INITIAL_PLAIN_DATA_REQUEST,
   passwordReset: INITIAL_PLAIN_DATA_REQUEST,
   allPost: INITIAL_PLAIN_DATA_REQUEST,
-  allLike: INITIAL_PLAIN_DATA_REQUEST,
   createLike: INITIAL_BLANK_REQUEST,
   unLike: INITIAL_BLANK_REQUEST,
   dataCreatePost: INITIAL_BLANK_REQUEST,
-  allComment: INITIAL_PLAIN_DATA_REQUEST,
   handleComment: INITIAL_BLANK_REQUEST,
 };
 
@@ -35,9 +33,7 @@ export default function serviceApiReducer(state = INITIAL_STATE, action) {
     _.startsWith(type, SERVICE_API.FORGOT_PASSWORD) ||
     _.startsWith(type, SERVICE_API.RESET_PASSWORD) ||
     _.startsWith(type, SERVICE_API.GET_ALL_POST) ||
-    _.startsWith(type, SERVICE_API.GET_ALL_LIKE) ||
     _.startsWith(type, SERVICE_API.CREATE_POST) ||
-    _.startsWith(type, SERVICE_API.GET_ALL_COMMENT) ||
     _.startsWith(type, SERVICE_API.CREATE_COMMENT)
   ) return plainRequestReducer(state, action);
 

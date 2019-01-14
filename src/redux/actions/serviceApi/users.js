@@ -25,7 +25,7 @@ export function authWithEmail({ email, password }) {
     const request = {
       data,
       method: POST,
-      url: '/login',
+      url: '/signin',
       transformResponse: response =>
         responseInterceptor(response, ({ data }) => User.build(data)),
     };

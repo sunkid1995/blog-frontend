@@ -10,30 +10,8 @@ import { SERVICE_API } from 'src/redux/types';
 // Utils
 import { buildHeaders, responseInterceptor } from 'src/redux/utils';
 
-// Models
-import CommentModel from 'src/models/CommentModel';
 
-const { REQUEST_METHODS: { GET, POST } } = API_CONFIGS;
-
-export function getAllComment(payload) {
-  const { page, perPage } = payload;
-  const action = createAction(SERVICE_API.GET_ALL_COMMENT);
-  const dataKey = 'allComment';
-
-  return (dispatch, getState) => {
-    const request = {
-      headers: buildHeaders(getState()),
-      params: {
-        page, perPage,
-      },
-      method: GET,
-      transformResponse: response =>
-        responseInterceptor(response, ({ data }) => CommentModel.buildArray(data)),
-      url: '/comment',
-    };
-    return dispatch(action({ request, dataKey }));
-  };
-}
+const { REQUEST_METHODS: { POST } } = API_CONFIGS;
 
 export function createComment(payload) {
   const { postId, userId, comment } = payload;

@@ -10,6 +10,9 @@ import { SERVICE_API } from 'src/redux/types';
 // Utils
 import { buildHeaders, responseInterceptor } from 'src/redux/utils';
 
+// Model
+import PostModel from 'src/models/PostModel';
+
 const { REQUEST_METHODS: { GET, POST } } = API_CONFIGS;
 
 export function getAllPost(payload) {
@@ -26,7 +29,7 @@ export function getAllPost(payload) {
       method: GET,
       url:'/posts',
       transformResponse: response =>
-        responseInterceptor(response, ({ data }) => data),
+        responseInterceptor(response, ({ data }) => PostModel.buildArray(data)),
     };
     return dispatch(action({ request, dataKey }));
   };
@@ -41,7 +44,7 @@ export function createPost(payload) {
   const bodyFormData = new FormData();
   bodyFormData.set('title', title);
   bodyFormData.set('content', content);
-  bodyFormData.set('authorId', _id);
+  bodyFormData.set('user_id', _id);
   bodyFormData.append('image', image);
 
   return (dispatch, getState) => {

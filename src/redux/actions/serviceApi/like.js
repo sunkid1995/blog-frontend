@@ -10,28 +10,7 @@ import { SERVICE_API } from 'src/redux/types';
 // Utils
 import { buildHeaders, responseInterceptor } from 'src/redux/utils';
 
-const { REQUEST_METHODS: { GET, POST, DELETE } } = API_CONFIGS;
-
-export function getAllLike(payload) {
-  const { page, perPage } = payload;
-
-  const action = createAction(SERVICE_API.GET_ALL_LIKE);
-  const dataKey = 'allLike';
-
-  return (dispatch, getState) => {
-    const request = {
-      headers: buildHeaders(getState()),
-      params: {
-        page, perPage,
-      },
-      method: GET,
-      transformResponse: response =>
-        responseInterceptor(response, ({ data }) => data),
-      url:'/like',
-    };
-    return dispatch(action({ request, dataKey }));
-  };
-}
+const { REQUEST_METHODS: { POST, DELETE } } = API_CONFIGS;
 
 export function createLike(payload) {
   const { userId, postId, totalLike } = payload;

@@ -5,8 +5,7 @@ import { serviceApi } from 'src/redux/actions';
 
 function mapStateToProps(state) {
   const { user } = state.auth;
-  const { allComment } = state.serviceApi;
-  return { user, allComment };
+  return { user };
 }
 
 function mapDispatchToProps(dispatch) {
