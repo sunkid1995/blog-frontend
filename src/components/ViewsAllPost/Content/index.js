@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import propTypes from 'prop-types';
-import { Col, Card, CardTitle, CardImg, CardText, CardBody,CardFooter, CardHeader } from 'reactstrap';
+import { Row,Col, Card, CardTitle, CardImg, CardText, CardBody,CardFooter, CardHeader } from 'reactstrap';
 import moment from 'moment';
 
 // css
@@ -88,7 +88,7 @@ export default class Content extends React.Component {
       .fromNow();
 
     return (
-      <Col sm={{ size: 6, order: 2, offset: 3 }}>
+      <Col sm={{ size: 5, order: 2, offset: 3 }}>
         <Card className="card-content">
           <CardHeader>
             <CardTitle className="wrap-title">
@@ -109,10 +109,22 @@ export default class Content extends React.Component {
               src={`http://localhost:8080/${image}`} top width="100%"
             />
             }
-            <p className="actions-post mb-0 p-2 pt-1">
-              <i className="far fa-heart" />{' '}
-              {totalLike}
-            </p>
+            <Row>
+              <Col sm={{ size: 6 }}>
+                <p className="actions-post mb-0 p-2 pt-1">
+                  <i className="far fa-heart" />{' '}
+                  {totalLike}
+                </p>
+              </Col>
+              
+              <Col sm={{ size: 6 }}>
+                {item.comments.length > 0 && 
+                <p className="actions-post mb-0 p-2 pt-1 float-right">
+                  {`${item.comments.length} Bình luận`}
+                </p>
+                }
+              </Col>
+            </Row>
           </CardBody>
           <CardFooter className="card-actions">
             <CardActions 

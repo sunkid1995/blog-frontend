@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import propTypes from 'prop-types';
-import { Container, Row } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 
 import css from 'styled-jsx/css';
 
@@ -78,7 +78,7 @@ export default class ViewsAllPost extends React.Component {
     return (
       <Container fluid>
         <Row className="wrap-create-post">
-          <CreatePost callbackModal={false} height={100} />
+          <CreatePost />
         </Row>
         {data !== undefined && _.map(data, this.renderContentPost)}
         <style jsx>{styles}</style>
