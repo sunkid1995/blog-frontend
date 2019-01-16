@@ -10,9 +10,6 @@ import css from 'styled-jsx/css';
 // Contants
 import { MENU_BAR_IDS, MENU_BAR } from 'src/constants';
 
-// Component
-import ModalCreatePost from 'src/components/Modal/ModalCreatePost';
-
 // Models
 import User from 'src/models/User';
 
@@ -20,7 +17,7 @@ import User from 'src/models/User';
 import Avatar from './Avatar';
 import withConnect from './withConnect';
 
-const { NOTIFICATIONS, MESSAGE, CREATE } = MENU_BAR_IDS;
+const { NOTIFICATIONS, MESSAGE } = MENU_BAR_IDS;
 
 @withConnect
 export default class UserAvatar extends React.PureComponent {
@@ -36,7 +33,6 @@ export default class UserAvatar extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalToggle: false,
     };
 
     this.deauthorize = props.deauthorize.bind(this);
@@ -84,13 +80,11 @@ export default class UserAvatar extends React.PureComponent {
     );
   }
 
-  onChangeNavBar = menuId => {
-    if (menuId === CREATE) this.toggleModalCreatePost();
+  onChangeNavBar = id => {
+    console.log(id); // eslint-disable-line no-console
   }
 
-  toggleModalCreatePost = () => this.setState({ modalToggle: !this.state.modalToggle });
-
-  renderMenubarItem = () => _.map([MESSAGE ,NOTIFICATIONS, CREATE], id => {
+  renderMenubarItem = () => _.map([MESSAGE ,NOTIFICATIONS], id => {
     const { [id]: { enabled, href, icon } } = MENU_BAR;
     if (!enabled) return null;
 
@@ -105,7 +99,6 @@ export default class UserAvatar extends React.PureComponent {
 
   render() {
     const { user } = this.props;
-    const { modalToggle } = this.state;
     if (user == null) return null;
 
     return (
@@ -117,12 +110,6 @@ export default class UserAvatar extends React.PureComponent {
         <NavItem>
           {this.renderAvatar(user)}
         </NavItem>
-        {modalToggle !== undefined &&
-          <ModalCreatePost 
-            modalToggle={modalToggle}
-            toggleModalCreatePost={this.toggleModalCreatePost}
-          />
-        }
       </Nav>
     );
   }

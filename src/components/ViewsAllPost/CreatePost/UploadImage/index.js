@@ -38,7 +38,7 @@ const styles = css`
 .container {
   position: relative;
   width: 50%;
-  margin-left: 25px;
+  margin-left: 40px;
 }
 
 .image {
@@ -76,6 +76,21 @@ const styles = css`
   padding: 5px 13px;
   border-radius: 0.25rem !important;
   cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin-left: -13px;
+  }
+
+  .image {
+    width: 100%;
+  }
+
+  .middle {
+    left: 50%;
+  }
+
 }
 `;
 
