@@ -49,8 +49,8 @@ export default class PostController extends React.Component {
    render() {
      const { content, onChangeGetCreatePost, closeImage , resultImg, changeFileImage, loading, funcCreatePost } = this.props;
      return (
-       <Col sm={{ size: 5, order: 2, offset: 3 }}>
-         <Card>
+       <Col sm="12">
+         <Card className="show-form-create-post">
            <CardHeader>{'Tạo bài viết'}</CardHeader>
            <CardBody>
              <Form>
@@ -143,6 +143,10 @@ const styles = css`
 
   :global(.detail-create-post) {
     margin-top: 70px;
+  }
+
+  :global(.show-form-create-post) {
+    box-shadow: rgba(0,0,0,0.3) 0px 5px 30px 0px;
   }
 
   input[type="file"] {

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import propTypes from 'prop-types';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row } from 'reactstrap';
 
 import css from 'styled-jsx/css';
 
@@ -12,6 +12,8 @@ import PostModel from 'src/models/PostModel';
 import Loading from 'src/components/Commons/Loading';
 import Content from './Content';
 import CreatePost from './CreatePost';
+import TabListControlLeft from './TabListControlLeft';
+import TabShowRight from './TabShowRight';
 
 // withRedux
 import withRedux from './withRedux';
@@ -63,9 +65,9 @@ export default class ViewsAllPost extends React.Component {
     };
 
     return (
-      <Row className="content mt-2 mb-3" key={`content-${index}`}>
+      <React.Fragment key={`content-${index}`}>
         <Content {...props} />
-      </Row>
+      </React.Fragment>
     );
   }
 
@@ -76,13 +78,25 @@ export default class ViewsAllPost extends React.Component {
     if (loading) return <Loading loading />;
 
     return (
-      <Container fluid>
-        <Row className="wrap-create-post">
-          <CreatePost />
-        </Row>
-        {data !== undefined && _.map(data, this.renderContentPost)}
+      <div>
+        <main className="main-left">
+          <TabListControlLeft />
+        </main>
+        <main className="main-right">
+          <TabShowRight />
+        </main>
+        <aside>
+          <Container fluid>
+            <Row className="wrap-create-post">
+              <CreatePost />
+            </Row>
+            <Row className="content mt-2 mb-3">
+              {data !== undefined && _.map(data, this.renderContentPost)}
+            </Row>
+          </Container>
+        </aside>
         <style jsx>{styles}</style>
-      </Container>
+      </div>
     );
   }
 }
@@ -90,5 +104,16 @@ export default class ViewsAllPost extends React.Component {
 const styles = css`
   :global(.wrap-create-post) {
     margin-top: 70px !important;
+  }
+  .main-left {
+    float: left;
+    width: 25%;
+    height: 300px;
+  }
+
+  .main-right {
+    float: right;
+    width: 33%;
+    height: 700px;
   }
 `;
