@@ -67,4 +67,31 @@ export const MENU_BAR = {
   },
 };
 
+// Menu tab list left
+const HOT = 'host';
+const NEW = 'new';
+const TOP = 'top';
+
+export const MENU_TAB_LIST_LEFT = {
+  [HOT]: {
+    enabled: true,
+    href: '/hot',
+    title: 'Đang hot',
+    icon: <i className="fab fa-hotjar" />,
+  },
+  [NEW]: {
+    enabled: true,
+    href: '/new',
+    title: 'Mới nhất',
+    icon: <i className="fas fa-newspaper" />,
+  },
+  [TOP]: {
+    enabled: true,
+    href: '/top',
+    title: 'Top',
+    icon: <i className="fas fa-crown" />,
+  },
+};
+export const MENU_TAB_LIST_LEFT_IDS = { HOT, NEW, TOP };
+
 export const MENU_BAR_IDS = { NOTIFICATIONS, MESSAGE };

@@ -88,7 +88,7 @@ export default class Content extends React.Component {
       .fromNow();
 
     return (
-      <Col sm={{ size: 5, order: 2, offset: 3 }}>
+      <Col className="mb-3" sm="12">
         <Card className="card-content">
           <CardHeader>
             <CardTitle className="wrap-title">
@@ -155,7 +155,7 @@ const styles = css`
   }
 
   :global(.card-user-name) {
-    color: #365899 !important;
+    color: ${COLOR.BLUE} !important;
     cursor: pointer;
     text-decoration: none;
     font-weight: 600;
