@@ -7,16 +7,20 @@ import { FONT_SIZE, COLOR } from 'src/constants/style-set';
 
 export default class Control extends React.Component {
   static propTypes = {
+    comments: propTypes.object.isRequired,
+    handleEventUpdate: propTypes.func.isRequired,
     index: propTypes.number.isRequired,
     post: propTypes.string.isRequired,
+    updateComment: propTypes.bool.isRequired,
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       tooltip: false,
       popover: false,
     };
+    this.handleEventUpdate = props.handleEventUpdate.bind(this);
   }
 
   componentDidMount() {}
@@ -24,8 +28,12 @@ export default class Control extends React.Component {
   toggleTooltip = () => this.setState({ tooltip: !this.state.tooltip });
   togglePopover = () => this.setState({ popover: !this.state.popover });
 
+  clickUpdate = payload => {
+    this.handleEventUpdate(payload);
+  }
+
   render() {
-    const { index, post } = this.props;
+    const { index, post, updateComment, comments } = this.props;
     const { tooltip, popover } = this.state;
     return (
       <React.Fragment key={`logs-${index}`}>
@@ -34,9 +42,16 @@ export default class Control extends React.Component {
           <p className="logs-control">{'Chỉnh sửa hoặc xoá bình luận này'}</p>
         </Tooltip>
 
-        <Popover isOpen={popover} placement="bottom" target={`logs_control_${index}_${post}`} toggle={this.togglePopover} >
-          <p className="item-control">{'Chỉnh sửa'}</p>
-          <p className="item-control">{'Xoá'}</p>
+        <Popover isOpen={popover} placement="bottom" target={`logs_control_${index}_${post}`} toggle={this.togglePopover}>
+          {updateComment ?
+            <span>
+              <p className="item-control" onClick={() => this.clickUpdate({ comments, index })}>{'Chỉnh sửa'}</p>
+              <p className="item-control">{'Xoá'}</p>
+            </span>
+            :
+            <p className="item-control">{'Báo cáo'}</p>
+          }
+          
         </Popover>
         <style jsx>{`
           .item-control {
